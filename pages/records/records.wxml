@@ -1,0 +1,88 @@
+<!--pages/records/records.wxml - 战绩查询 - 完全照搬Figma设计-->
+<view class="records">
+  <!-- 头部 -->
+  <view class="records__header">
+    <button class="records__back" bindtap="onBack">← 返回</button>
+    <text class="records__header-title">📊 战绩查询</text>
+  </view>
+
+  <view class="records__body">
+    <!-- 统计网格 -->
+    <view class="records__stats-grid">
+      <view class="records__stat-card">
+        <text class="records__stat-value">{{stats.games || 0}}</text>
+        <text class="records__stat-label">参与场次</text>
+      </view>
+      <view class="records__stat-card">
+        <text class="records__stat-value">{{stats.winRate || 0}}%</text>
+        <text class="records__stat-label">胜率</text>
+      </view>
+      <view class="records__stat-card">
+        <text class="records__stat-value text-success">{{stats.maxScore || 0}}</text>
+        <text class="records__stat-label">最高积分</text>
+      </view>
+      <view class="records__stat-card">
+        <text class="records__stat-value {{(stats.totalScore || 0) > 0 ? 'text-success' : 'text-danger'}}">
+          {{stats.totalScore > 0 ? '+' : ''}}{{stats.totalScore || 0}}
+        </text>
+        <text class="records__stat-label">累计积分</text>
+      </view>
+    </view>
+
+    <!-- 近期积分走势 -->
+    <view class="records__trend">
+      <view class="records__trend-header">
+        <text class="records__trend-title">近期积分走势</text>
+        <text class="records__trend-badge">近7场</text>
+      </view>
+      <!-- 趋势图（简化版，用柱状图展示） -->
+      <view class="records__trend-chart">
+        <view class="records__trend-bars" style="display:flex;align-items:flex-end;gap:10rpx;height:180rpx;padding:0 10rpx;">
+          <view
+            wx:for="{{trend}}"
+            wx:key="date"
+            style="flex:1;display:flex;flex-direction:column;align-items:center;"
+          >
+            <view style="font-size:16rpx;color:var(--text-sub);margin-bottom:4rpx;">{{item.score > 0 ? '+' : ''}}{{item.score}}</view>
+            <view
+              style="width:100%;max-width:40rpx;border-radius:6rpx 6rpx 0 0;height:{{item.barHeight}}rpx;background:{{item.barColor}};transition:height 0.3s;"
+            ></view>
+            <view style="font-size:16rpx;color:var(--text-sub);margin-top:4rpx;">{{item.label}}</view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 场次明细 -->
+    <text class="records__list-title">场次明细</text>
+    <view wx:if="{{listLoading && list.length === 0}}" class="records__loading">加载中…</view>
+    <view wx:elif="{{list.length === 0}}" class="records__empty">
+      <empty-state text="暂无场次记录"></empty-state>
+    </view>
+    <scroll-view wx:else class="records__list" scroll-y bindscrolltolower="onLoadMore" enhanced show-scrollbar="{{false}}" style="height:calc(100vh - 400rpx);">
+      <view
+        class="records__match"
+        wx:for="{{list}}"
+        wx:key="_id"
+        data-id="{{item._id}}"
+        bindtap="onViewDetail"
+      >
+        <view class="records__match-icon {{item.result === 'win' ? 'records__match-icon--win' : item.result === 'lose' ? 'records__match-icon--lose' : 'records__match-icon--even'}}">
+          {{item.result === 'win' ? '🏆' : item.result === 'lose' ? '😢' : '😐'}}
+        </view>
+        <view class="records__match-info">
+          <text class="records__match-room">#{{item.roomNo}}</text>
+          <text class="records__match-meta">{{item.dateText}} · {{item.memberCount}}人 · {{item.resultText}}</text>
+        </view>
+        <view class="records__match-score">
+          <text class="records__match-score-value {{item.result === 'win' ? 'text-success' : item.result === 'lose' ? 'text-danger' : ''}}">
+            {{item.score > 0 ? '+' : ''}}{{item.score}}
+          </text>
+          <text class="records__match-score-label">积分</text>
+        </view>
+      </view>
+      <view wx:if="{{listLoading}}" style="text-align:center;padding:24rpx 0;font-size:24rpx;color:var(--text-sub);">加载中…</view>
+      <view wx:elif="{{!hasMore && list.length > 0}}" style="text-align:center;padding:24rpx 0;font-size:24rpx;color:var(--text-sub);">— 没有更多了 —</view>
+    </scroll-view>
+  </view>
+</view>

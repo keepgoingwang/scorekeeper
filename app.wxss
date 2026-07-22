@@ -1,0 +1,71 @@
+/* app.wxss - 全局样式 - 完全照搬Figma设计 */
+page {
+  --mint: #4ECDC4;
+  --mint-dark: #3ABDB4;
+  --mint-light: #E8F8F7;
+  --mint-grad: linear-gradient(135deg, #4ECDC4 0%, #45B7D1 100%);
+  --sky: #45B7D1;
+  --yellow: #FFD93D;
+  --green: #6BCB77;
+  --green-light: #E8F8ED;
+  --orange: #FF9F45;
+  --red: #FF6B6B;
+  --red-light: #FFF2F2;
+  --bg: #F8FAFB;
+  --card: #FFFFFF;
+  --text: #2C3E50;
+  --text-sub: #7F8C8D;
+  --border: #E8ECEF;
+  --mode-bar: #F0F4F8;
+
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, 'PingFang SC', 'SF Pro Display', 'Helvetica Neue', sans-serif;
+  font-size: 28rpx;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 卡片 */
+.card {
+  background: var(--card);
+  border-radius: 36rpx;
+  box-shadow: 0 4rpx 24rpx rgba(0,0,0,0.06);
+  padding: 24rpx;
+  margin-bottom: 24rpx;
+}
+
+/* 主按钮 - 薄荷渐变 */
+.btn-primary {
+  background: var(--mint-grad);
+  color: #fff;
+  border-radius: 44rpx;
+  text-align: center;
+  padding: 30rpx 0;
+  font-size: 30rpx;
+  font-weight: 700;
+  box-shadow: 0 8rpx 28rpx rgba(78,205,196,0.46);
+  border: none;
+  transition: transform 0.15s;
+}
+
+.btn-primary:active { transform: scale(0.97); }
+
+/* 次按钮 */
+.btn-secondary {
+  background: var(--card);
+  color: var(--mint);
+  border: 4rpx solid var(--mint);
+  border-radius: 44rpx;
+  text-align: center;
+  padding: 30rpx 0;
+  font-size: 28rpx;
+  font-weight: 700;
+  transition: transform 0.15s;
+}
+
+.btn-secondary:active { transform: scale(0.97); background: var(--mint-light); }
+
+/* 文字辅助类 */
+.text-muted { color: var(--text-sub); font-size: 24rpx; }
+.text-success { color: var(--green); }
+.text-danger { color: var(--red); }

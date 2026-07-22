@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "结算报告",
+  "usingComponents": {
+    "empty-state": "../../components/empty-state/empty-state"
+  }
+}

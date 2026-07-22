@@ -1,0 +1,13 @@
+<!--pages/scan/scan.wxml - 扫码加入重构版（PRD §2.3）-->
+<view class="scan">
+  <view class="scan__container">
+    <view class="scan__icon">📷</view>
+    <view class="scan__hint">正在打开相机…</view>
+    <view class="scan__loading">
+      <view class="scan__loading-dot"></view>
+      <view class="scan__loading-dot"></view>
+      <view class="scan__loading-dot"></view>
+    </view>
+    <view class="scan__cancel" bindtap="onCancel">取消</view>
+  </view>
+</view>

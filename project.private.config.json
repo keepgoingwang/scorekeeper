@@ -1,0 +1,7 @@
+{
+  "projectname": "scorekeeper",
+  "setting": {
+    "compileHotReLoad": true
+  },
+  "libVersion": "3.5.0"
+}

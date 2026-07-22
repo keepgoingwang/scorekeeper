@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "战绩查询",
+  "usingComponents": {
+    "empty-state": "../../components/empty-state/empty-state"
+  }
+}

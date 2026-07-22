@@ -1,0 +1,177 @@
+/* pages/settings/settings.wxss - 系统设置 - 完全照搬Figma设计 */
+.settings {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  overflow: hidden;
+}
+
+.settings__header {
+  background: var(--mint-grad);
+  padding: 28rpx 32rpx;
+  display: flex;
+  align-items: center;
+  gap: 24rpx;
+  flex-shrink: 0;
+}
+
+.settings__back {
+  font-size: 28rpx;
+  color: #fff;
+  padding: 0;
+  background: none;
+  border: none;
+  margin: 0;
+  line-height: 1;
+}
+
+.settings__back::after { border: none; }
+
+.settings__header-title {
+  font-size: 32rpx;
+  font-weight: 800;
+  color: #fff;
+}
+
+.settings__body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 32rpx;
+  display: flex;
+  flex-direction: column;
+  gap: 32rpx;
+}
+
+.settings__section {
+  background: var(--card);
+  border-radius: 36rpx;
+  padding: 32rpx;
+  box-shadow: 0 4rpx 24rpx rgba(0,0,0,0.06);
+}
+
+.settings__section-title {
+  font-size: 26rpx;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 28rpx;
+}
+
+.settings__skins {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24rpx;
+}
+
+.settings__skin-item {
+  border-radius: 28rpx;
+  overflow: hidden;
+  border: 5rpx solid transparent;
+  transition: all 0.2s;
+}
+
+.settings__skin-item.is-active {
+  border-color: var(--mint);
+  box-shadow: 0 0 0 4rpx rgba(78,205,196,0.25);
+}
+
+.settings__skin-preview {
+  height: 144rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12rpx;
+}
+
+.settings__skin-chip {
+  width: 40rpx;
+  height: 40rpx;
+  border-radius: 50%;
+  border: 4rpx solid rgba(255,255,255,0.8);
+  box-shadow: 0 4rpx 8rpx rgba(0,0,0,0.3);
+}
+
+.settings__skin-name {
+  padding: 16rpx 20rpx;
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+}
+
+.settings__skin-name-text {
+  font-size: 24rpx;
+  font-weight: 600;
+}
+
+.settings__skin-name.active { color: var(--mint); }
+.settings__skin-name.inactive { color: var(--text); }
+
+.settings__skin-check {
+  font-size: 24rpx;
+}
+
+/* 通知设置 */
+.settings__notification {
+  background: var(--card);
+  border-radius: 36rpx;
+  overflow: hidden;
+  box-shadow: 0 4rpx 24rpx rgba(0,0,0,0.06);
+}
+
+.settings__notification-header {
+  padding: 28rpx 32rpx;
+  border-bottom: 2rpx solid var(--border);
+}
+
+.settings__notification-title {
+  font-size: 26rpx;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.settings__switch-item {
+  padding: 28rpx 32rpx;
+  display: flex;
+  align-items: center;
+  gap: 24rpx;
+  border-bottom: 2rpx solid var(--border);
+}
+
+.settings__switch-item:last-child { border-bottom: none; }
+
+.settings__switch-icon {
+  font-size: 44rpx;
+}
+
+.settings__switch-info {
+  flex: 1;
+}
+
+.settings__switch-label {
+  font-size: 28rpx;
+  color: var(--text);
+  font-weight: 500;
+}
+
+.settings__switch-sub {
+  font-size: 22rpx;
+  color: var(--text-sub);
+  margin-top: 4rpx;
+}
+
+.settings__save {
+  width: 100%;
+  padding: 30rpx;
+  border-radius: 44rpx;
+  font-size: 30rpx;
+  font-weight: 700;
+  border: none;
+  color: #fff;
+  box-shadow: 0 8rpx 32rpx rgba(78,205,196,0.42);
+  transition: background 0.3s;
+  margin: 0;
+}
+
+.settings__save::after { border: none; }
+.settings__save--normal { background: var(--mint-grad); }
+.settings__save--saved { background: var(--green); }

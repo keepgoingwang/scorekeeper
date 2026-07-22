@@ -1,0 +1,58 @@
+<!--pages/settings/settings.wxml - 系统设置 - 完全照搬Figma设计-->
+<view class="settings">
+  <view class="settings__header">
+    <button class="settings__back" bindtap="onBack">← 返回</button>
+    <text class="settings__header-title">⚙️ 系统设置</text>
+  </view>
+
+  <view class="settings__body">
+    <!-- 牌桌皮肤 -->
+    <view class="settings__section">
+      <text class="settings__section-title">🎨 牌桌皮肤</text>
+      <view class="settings__skins">
+        <view
+          class="settings__skin-item {{currentSkin === item.key ? 'is-active' : ''}}"
+          wx:for="{{skins}}"
+          wx:key="key"
+          data-skin="{{item.key}}"
+          bindtap="onSelectSkin"
+        >
+          <view class="settings__skin-preview" style="background:{{item.bg || item.color}}">
+            <view class="settings__skin-chip" style="background:#FFD93D;"></view>
+            <view class="settings__skin-chip" style="background:#6BCB77;"></view>
+            <view class="settings__skin-chip" style="background:#FF6B6B;"></view>
+          </view>
+          <view class="settings__skin-name {{currentSkin === item.key ? 'active' : 'inactive'}}">
+            <text wx:if="{{currentSkin === item.key}}" class="settings__skin-check">✓</text>
+            <text class="settings__skin-name-text">{{item.name}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 通知设置 -->
+    <view class="settings__notification">
+      <view class="settings__notification-header">
+        <text class="settings__notification-title">🔔 通知设置</text>
+      </view>
+      <view class="settings__switch-item">
+        <text class="settings__switch-icon">🔊</text>
+        <view class="settings__switch-info">
+          <text class="settings__switch-label">结算提醒音效</text>
+          <text class="settings__switch-sub">有新的结算时播放提示音</text>
+        </view>
+        <switch checked="{{soundEnabled}}" bindchange="onToggleSound" color="#4ECDC4" />
+      </view>
+      <view class="settings__switch-item">
+        <text class="settings__switch-icon">📳</text>
+        <view class="settings__switch-info">
+          <text class="settings__switch-label">结算提醒震动</text>
+          <text class="settings__switch-sub">结算通知时触发震动反馈</text>
+        </view>
+        <switch checked="{{vibrateEnabled}}" bindchange="onToggleVibrate" color="#4ECDC4" />
+      </view>
+    </view>
+
+    <button class="settings__save settings__save--normal" bindtap="onSave">保存设置</button>
+  </view>
+</view>

@@ -1,0 +1,51 @@
+<!--pages/help/help.wxml - 帮助反馈 - 完全照搬Figma设计-->
+<view class="help">
+  <view class="help__header">
+    <button class="help__back" bindtap="onBack">← 返回</button>
+    <text class="help__header-title">❓ 帮助反馈</text>
+  </view>
+
+  <view class="help__body">
+    <!-- FAQ -->
+    <view>
+      <text class="help__section-title">常见问题 FAQ</text>
+      <view class="help__faq-list">
+        <view
+          class="help__faq-item {{expandedFaq === index ? 'is-open' : ''}}"
+          wx:for="{{faqList}}"
+          wx:key="index"
+          data-index="{{index}}"
+          bindtap="onToggleFaq"
+        >
+          <view class="help__faq-q">
+            <view class="help__faq-q-badge">Q</view>
+            <text class="help__faq-q-text">{{item.q}}</text>
+            <text class="help__faq-q-arrow {{expandedFaq === index ? 'is-open' : ''}}">›</text>
+          </view>
+          <view wx:if="{{expandedFaq === index}}" class="help__faq-a">
+            <view class="help__faq-a-badge">
+              <view class="help__faq-a-badge-inner">A</view>
+            </view>
+            <text class="help__faq-a-text">{{item.a}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 意见反馈 -->
+    <view class="help__feedback">
+      <text class="help__feedback-title">💬 意见反馈</text>
+      <textarea
+        class="help__feedback-input"
+        placeholder="请描述您遇到的问题或建议..."
+        value="{{feedbackText}}"
+        bindinput="onFeedbackInput"
+      />
+      <button
+        class="help__feedback-submit {{feedbackText.trim() ? 'help__feedback-submit--active' : 'help__feedback-submit--disabled'}}"
+        disabled="{{!feedbackText.trim()}}"
+        bindtap="onSubmitFeedback"
+      >{{submitted ? '✅ 反馈已提交，感谢！' : '提交反馈'}}</button>
+    </view>
+  </view>
+</view>

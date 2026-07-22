@@ -1,0 +1,57 @@
+<!--pages/profile-edit/profile-edit.wxml - 编辑资料 - 完全照搬Figma设计-->
+<view class="profile-edit">
+  <view class="profile-edit__header">
+    <button class="profile-edit__back" bindtap="onBack">← 返回</button>
+    <text class="profile-edit__header-title">编辑资料</text>
+  </view>
+
+  <view class="profile-edit__body">
+    <!-- 头像选择 -->
+    <view class="profile-edit__avatar-area">
+      <button class="profile-edit__avatar-btn" open-type="chooseAvatar" bindchooseavatar="onChooseAvatar">
+        <image
+          wx:if="{{avatar}}"
+          class="profile-edit__avatar"
+          src="{{avatar}}"
+          mode="aspectFill"
+        />
+        <view wx:else class="profile-edit__avatar">{{nickname ? nickname[0] : '🤠'}}</view>
+        <text class="profile-edit__avatar-hint">点击更换头像</text>
+      </button>
+    </view>
+
+    <!-- 表单 -->
+    <view class="profile-edit__form">
+      <view class="profile-edit__field">
+        <text class="profile-edit__field-label">昵称（最多10字）</text>
+        <input
+          class="profile-edit__field-input"
+          type="text"
+          placeholder="请输入昵称"
+          value="{{nickname}}"
+          bindinput="onNicknameInput"
+          maxlength="10"
+        />
+      </view>
+      <view class="profile-edit__field">
+        <text class="profile-edit__field-label">年龄</text>
+        <input
+          class="profile-edit__field-input"
+          type="number"
+          placeholder="选填"
+          value="{{age}}"
+          bindinput="onAgeInput"
+        />
+      </view>
+      <view class="profile-edit__field">
+        <text class="profile-edit__field-label">用户 ID（不可修改）</text>
+        <text class="profile-edit__field-value">{{userId || '—'}}</text>
+      </view>
+    </view>
+
+    <button
+      class="profile-edit__save {{saved ? 'profile-edit__save--saved' : 'profile-edit__save--normal'}}"
+      bindtap="onSave"
+    >{{saved ? '✅ 保存成功' : '保存修改'}}</button>
+  </view>
+</view>

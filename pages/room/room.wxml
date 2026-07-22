@@ -1,0 +1,413 @@
+<!--pages/room/room.wxml - 房间页 - 完全照搬Figma设计 -->
+<view class="room">
+  <!-- ===== 1. 导航栏 - Figma: white bg, 10px 16px ===== -->
+  <view class="room__navbar">
+    <button class="room__back" bindtap="onBack">← 返回</button>
+    <text class="room__title">房间号：<text class="room__title-value">{{roomNo}}</text></text>
+    <button class="room__gear" bindtap="onOpenSettings">⚙️</button>
+  </view>
+
+  <!-- ===== 2. 头像区 - Figma: scrolling + fixed invite ===== -->
+  <view class="room__avatars-row">
+    <scroll-view class="room__avatars-scroll" scroll-x enhanced show-scrollbar="{{false}}">
+      <view
+        class="avatar-cell {{item.status === 'exited' ? 'is-exited' : ''}}"
+        wx:for="{{room.members}}"
+        wx:key="userId"
+      >
+        <view class="avatar-cell__head-wrap">
+          <view class="avatar-cell__head" style="background:{{item.isOwner ? 'linear-gradient(135deg, #4ECDC4 0%, #45B7D1 100%)' : '#E8F8F7'}};border-color:{{item.isOwner ? '#4ECDC4' : '#E8ECEF'}}">
+            <image wx:if="{{item.avatar}}" class="avatar-cell__head-img" src="{{item.avatar}}" mode="aspectFill" lazy-load />
+            <text wx:else style="font-size:42rpx">{{item.nickname ? item.nickname[0] : '?'}}</text>
+          </view>
+          <text wx:if="{{item.isOwner && item.status !== 'exited'}}" class="avatar-cell__crown">👑</text>
+          <text wx:if="{{item.submitted && item.status !== 'exited'}}" class="avatar-cell__submitted"></text>
+          <view wx:if="{{item.status === 'exited'}}" class="avatar-cell__exited-overlay">🚪</view>
+        </view>
+        <text class="avatar-cell__name">{{item.nickname}}{{item.status === 'exited' ? '(退)' : ''}}</text>
+        <text class="avatar-cell__score {{item.score > 0 ? 'text-success' : item.score < 0 ? 'text-danger' : 'text-muted'}}">
+          {{item.score > 0 ? '+' : ''}}{{item.score}}
+        </text>
+      </view>
+    </scroll-view>
+    <button class="room__invite-btn" bindtap="onInvite">
+      <view class="room__invite-icon">➕</view>
+      <text class="room__invite-label">邀请好友</text>
+    </button>
+  </view>
+
+  <!-- ===== 3. 模式栏 - Figma: modeBar ===== -->
+  <view class="room__mode-bar">
+    <view class="room__mode-indicator" style="background:{{modeInfo.color}}"></view>
+    <view class="room__mode-info">
+      <text class="room__mode-title">{{modeInfo.title}}</text>
+      <text class="room__mode-desc">{{modeInfo.desc}}</text>
+    </view>
+  </view>
+
+  <!-- ===== 4. 牌桌区域 - Figma: SquareTable / CircleTable ===== -->
+  <view class="room__table-wrap">
+    <block wx:if="{{room.tableShape === 'square'}}">
+      <!-- 方形牌桌 -->
+      <view class="room__square-table">
+        <!-- 桌面 -->
+        <view class="room__square-surface" style="background:{{skinBg}}">
+          <view class="room__square-felt"></view>
+          <view class="room__square-corner" style="left:20rpx;top:20rpx;"></view>
+          <view class="room__square-corner" style="right:20rpx;top:20rpx;"></view>
+          <view class="room__square-corner" style="left:20rpx;bottom:20rpx;"></view>
+          <view class="room__square-corner" style="right:20rpx;bottom:20rpx;"></view>
+          <!-- 中心徽章 -->
+          <view class="room__square-center">
+            <text class="room__square-center-icon">🀄</text>
+            <text class="room__square-center-round">第 {{room.round || 12}} 局</text>
+          </view>
+          <!-- 筹码（4个位置） -->
+          <view wx:for="{{room.members}}" wx:key="userId" wx:if="{{item.status === 'active' && item.score !== 0}}"
+            style="position:absolute;left:{{item.chipX}}%;top:{{item.chipY}}%;transform:translate(-50%,-50%)">
+            <view class="room__chip-pile">
+              <text class="room__chip-score" style="color:{{item.score > 0 ? '#FFE566' : '#FFB3B3'}}">{{item.score > 0 ? '+' : ''}}{{item.score}}</text>
+              <view class="room__chip-stack" style="height:{{44 + (chipCount(item.score) - 1) * 8}}rpx">
+                <view wx:for="{{chipCount(item.score)}}" wx:key="*this"
+                  class="room__chip-item"
+                  style="bottom:{{index * 8}}rpx;background:{{chipColor(item.score, index === chipCount(item.score) - 1)}};box-shadow:0 {{chipCount(item.score) - index + 1}}rpx {{(chipCount(item.score) - index) * 4 + 4}}rpx rgba(0,0,0,0.42)">
+                  <view wx:if="{{index === chipCount(item.score) - 1}}" class="room__chip-inner"></view>
+                </view>
+              </view>
+            </view>
+          </view>
+        </view>
+        <!-- 玩家位置（4个方向） -->
+        <view wx:for="{{activePlayers}}" wx:key="userId" wx:for-index="i">
+          <view wx:if="{{i === 0}}" class="room__player-pos room__player-pos--top">
+            <view class="room__badge">
+              <view class="room__badge-avatar {{item.isOwner ? 'room__badge-avatar--owner' : ''}} {{item.status === 'exited' ? 'room__badge-avatar--exited' : ''}}">
+                <image wx:if="{{item.avatar}}" class="room__badge-avatar-img" src="{{item.avatar}}" mode="aspectFill" />
+                <text wx:else style="font-size:40rpx">{{item.nickname ? item.nickname[0] : '?'}}</text>
+                <text wx:if="{{item.isOwner && item.status !== 'exited'}}" class="room__badge-crown">👑</text>
+                <text wx:if="{{item.submitted && item.status !== 'exited'}}" class="room__badge-submitted"></text>
+                <view wx:if="{{item.status === 'exited'}}" class="room__badge-exited-overlay">🚪</view>
+              </view>
+              <text class="room__badge-name">{{item.nickname}}</text>
+              <text class="room__badge-score {{item.score > 0 ? 'text-success' : item.score < 0 ? 'text-danger' : ''}}">{{item.score > 0 ? '+' : ''}}{{item.score}}</text>
+            </view>
+          </view>
+          <view wx:elif="{{i === 1}}" class="room__player-pos room__player-pos--right">
+            <view class="room__badge">
+              <view class="room__badge-avatar {{item.isOwner ? 'room__badge-avatar--owner' : ''}} {{item.status === 'exited' ? 'room__badge-avatar--exited' : ''}}">
+                <image wx:if="{{item.avatar}}" class="room__badge-avatar-img" src="{{item.avatar}}" mode="aspectFill" />
+                <text wx:else style="font-size:40rpx">{{item.nickname ? item.nickname[0] : '?'}}</text>
+                <text wx:if="{{item.isOwner && item.status !== 'exited'}}" class="room__badge-crown">👑</text>
+                <text wx:if="{{item.submitted && item.status !== 'exited'}}" class="room__badge-submitted"></text>
+                <view wx:if="{{item.status === 'exited'}}" class="room__badge-exited-overlay">🚪</view>
+              </view>
+              <text class="room__badge-name">{{item.nickname}}</text>
+              <text class="room__badge-score {{item.score > 0 ? 'text-success' : item.score < 0 ? 'text-danger' : ''}}">{{item.score > 0 ? '+' : ''}}{{item.score}}</text>
+            </view>
+          </view>
+          <view wx:elif="{{i === 2}}" class="room__player-pos room__player-pos--bottom">
+            <view class="room__badge">
+              <view class="room__badge-avatar {{item.isOwner ? 'room__badge-avatar--owner' : ''}} {{item.status === 'exited' ? 'room__badge-avatar--exited' : ''}}">
+                <image wx:if="{{item.avatar}}" class="room__badge-avatar-img" src="{{item.avatar}}" mode="aspectFill" />
+                <text wx:else style="font-size:40rpx">{{item.nickname ? item.nickname[0] : '?'}}</text>
+                <text wx:if="{{item.isOwner && item.status !== 'exited'}}" class="room__badge-crown">👑</text>
+                <text wx:if="{{item.submitted && item.status !== 'exited'}}" class="room__badge-submitted"></text>
+                <view wx:if="{{item.status === 'exited'}}" class="room__badge-exited-overlay">🚪</view>
+              </view>
+              <text class="room__badge-name">{{item.nickname}}</text>
+              <text class="room__badge-score {{item.score > 0 ? 'text-success' : item.score < 0 ? 'text-danger' : ''}}">{{item.score > 0 ? '+' : ''}}{{item.score}}</text>
+            </view>
+          </view>
+          <view wx:elif="{{i === 3}}" class="room__player-pos room__player-pos--left">
+            <view class="room__badge">
+              <view class="room__badge-avatar {{item.isOwner ? 'room__badge-avatar--owner' : ''}} {{item.status === 'exited' ? 'room__badge-avatar--exited' : ''}}">
+                <image wx:if="{{item.avatar}}" class="room__badge-avatar-img" src="{{item.avatar}}" mode="aspectFill" />
+                <text wx:else style="font-size:40rpx">{{item.nickname ? item.nickname[0] : '?'}}</text>
+                <text wx:if="{{item.isOwner && item.status !== 'exited'}}" class="room__badge-crown">👑</text>
+                <text wx:if="{{item.submitted && item.status !== 'exited'}}" class="room__badge-submitted"></text>
+                <view wx:if="{{item.status === 'exited'}}" class="room__badge-exited-overlay">🚪</view>
+              </view>
+              <text class="room__badge-name">{{item.nickname}}</text>
+              <text class="room__badge-score {{item.score > 0 ? 'text-success' : item.score < 0 ? 'text-danger' : ''}}">{{item.score > 0 ? '+' : ''}}{{item.score}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </block>
+    <block wx:else>
+      <!-- 圆形牌桌 -->
+      <view class="room__circle-table">
+        <view class="room__circle-surface" style="background:{{skinBg}}">
+          <view class="room__circle-felt"></view>
+          <view class="room__circle-center">
+            <text class="room__circle-center-icon">🀄</text>
+            <text class="room__circle-center-round">第 {{room.round || 8}} 局</text>
+          </view>
+          <!-- 筹码 -->
+          <view wx:for="{{room.members}}" wx:key="userId" wx:if="{{item.status === 'active' && item.score !== 0}}"
+            style="position:absolute;left:{{item.chipX}}%;top:{{item.chipY}}%;transform:translate(-50%,-50%)">
+            <view class="room__chip-pile">
+              <text class="room__chip-score" style="color:{{item.score > 0 ? '#FFE566' : '#FFB3B3'}}">{{item.score > 0 ? '+' : ''}}{{item.score}}</text>
+              <view class="room__chip-stack" style="height:{{44 + (chipCount(item.score) - 1) * 8}}rpx">
+                <view wx:for="{{chipCount(item.score)}}" wx:key="*this"
+                  class="room__chip-item"
+                  style="bottom:{{index * 8}}rpx;background:{{chipColor(item.score, index === chipCount(item.score) - 1)}};box-shadow:0 {{chipCount(item.score) - index + 1}}rpx {{(chipCount(item.score) - index) * 4 + 4}}rpx rgba(0,0,0,0.42)">
+                  <view wx:if="{{index === chipCount(item.score) - 1}}" class="room__chip-inner"></view>
+                </view>
+              </view>
+            </view>
+          </view>
+        </view>
+        <!-- 玩家位置（圆周） -->
+        <view wx:for="{{activePlayers}}" wx:key="userId"
+          style="position:absolute;left:{{item.playerX}}%;top:{{item.playerY}}%;transform:translate(-50%,-50%)">
+          <view class="room__badge">
+            <view class="room__badge-avatar {{item.isOwner ? 'room__badge-avatar--owner' : ''}} {{item.status === 'exited' ? 'room__badge-avatar--exited' : ''}}">
+              <image wx:if="{{item.avatar}}" class="room__badge-avatar-img" src="{{item.avatar}}" mode="aspectFill" />
+              <text wx:else style="font-size:40rpx">{{item.nickname ? item.nickname[0] : '?'}}</text>
+              <text wx:if="{{item.isOwner && item.status !== 'exited'}}" class="room__badge-crown">👑</text>
+              <text wx:if="{{item.submitted && item.status !== 'exited'}}" class="room__badge-submitted"></text>
+              <view wx:if="{{item.status === 'exited'}}" class="room__badge-exited-overlay">🚪</view>
+            </view>
+            <text class="room__badge-name">{{item.nickname}}</text>
+            <text class="room__badge-score {{item.score > 0 ? 'text-success' : item.score < 0 ? 'text-danger' : ''}}">{{item.score > 0 ? '+' : ''}}{{item.score}}</text>
+          </view>
+        </view>
+      </view>
+    </block>
+  </view>
+
+  <!-- ===== 5. 动态区 - Figma: rgba(0,0,0,0.04) ===== -->
+  <view class="room__ticker">
+    <text class="room__ticker-title">📢 房间动态</text>
+    <view wx:for="{{room.dynamics || []}}" wx:key="createdAt" class="room__ticker-item">
+      <text>{{item.icon || '•'}}</text>
+      <text class="room__ticker-text">{{item.text}}</text>
+    </view>
+    <view wx:if="{{!room.dynamics || room.dynamics.length === 0}}" class="room__ticker-item">
+      <text>-</text>
+      <text class="room__ticker-text">暂无动态</text>
+    </view>
+  </view>
+
+  <!-- ===== 6. 底部操作区 - Figma ===== -->
+  <view class="room__bottom">
+    <block wx:if="{{room.mode === 'auto'}}">
+      <button wx:if="{{room.isOwner}}" class="room__bottom-btn room__bottom-btn--primary" bindtap="onStartSettle">
+        <text class="room__bottom-btn-icon">🎲</text>
+        <text class="room__bottom-btn-label">发起第 {{room.round || 12}} 局结算</text>
+      </button>
+      <button class="room__bottom-btn room__bottom-btn--secondary" bindtap="onAction">
+        <text class="room__bottom-btn-icon">⚙️</text>
+        <text class="room__bottom-btn-label">操作</text>
+      </button>
+    </block>
+    <block wx:else>
+      <button class="room__bottom-btn room__bottom-btn--pay" bindtap="onPay">
+        <text class="room__bottom-btn-icon">💸</text>
+        <text class="room__bottom-btn-label">支出</text>
+      </button>
+      <button class="room__bottom-btn room__bottom-btn--secondary" bindtap="onAction">
+        <text class="room__bottom-btn-icon">⚙️</text>
+        <text class="room__bottom-btn-label">操作</text>
+      </button>
+    </block>
+  </view>
+
+  <!-- ===== 7. 分享面板 (QR Modal) - Figma ===== -->
+  <view wx:if="{{shareVisible}}" class="room__qr-overlay" bindtap="onCloseShare">
+    <view class="room__qr-panel" catchtap>
+      <view class="room__qr-header">
+        <text class="room__qr-title">🎉 邀请好友加入</text>
+        <button class="room__qr-close" bindtap="onCloseShare">✕</button>
+      </view>
+      <view class="room__qr-body">
+        <view class="room__qr-code">
+          <image wx:if="{{shareQrcode}}" style="width:400rpx;height:400rpx;" src="{{shareQrcode}}" mode="widthFix" />
+          <view wx:else class="room__qr-code-center">🀄</view>
+        </view>
+        <view class="room__qr-room">
+          <text class="room__qr-room-label">房间号（长按可复制）</text>
+          <text class="room__qr-room-no">{{roomNo}}</text>
+        </view>
+        <button class="room__qr-share" bindtap="onShareApp">💬 转发给好友</button>
+      </view>
+    </view>
+  </view>
+
+  <!-- ===== 8. 结算弹窗 (Auto Settle Modal) - Figma ===== -->
+  <view wx:if="{{settleModalVisible}}" class="room__settle-overlay" bindtap="onCloseSettleModal">
+    <view class="room__settle-panel" catchtap>
+      <view class="room__settle-header">
+        <view class="room__settle-header-left">
+          <text class="room__settle-title">第 {{room.round || 12}} 局结算</text>
+          <text class="room__settle-subtitle">请输入本局收入或支出，不进不出可不填</text>
+        </view>
+        <button class="room__settle-close" bindtap="onCloseSettleModal">✕</button>
+      </view>
+      <view class="room__settle-body">
+        <view class="room__settle-progress">
+          <text class="room__settle-progress-text">已提交：<text class="room__settle-progress-value">{{settleSubmitted}}/{{settleTotal}}</text> 人</text>
+          <view class="room__settle-timer {{settleCountdown <= 15 ? 'is-urgent' : ''}}">
+            <text class="room__settle-timer-icon">⏱️</text>
+            <text class="room__settle-timer-value">{{settleCountdown > 0 ? '剩余 ' + settleCountdown + ' 秒' : '—'}}</text>
+          </view>
+        </view>
+        <view class="room__settle-bar">
+          <view class="room__settle-bar-fill" style="width:{{settleCountdown > 0 ? (settleCountdown / 60 * 100) : 0}}%;background:{{settleCountdown > 30 ? 'linear-gradient(135deg, #4ECDC4 0%, #45B7D1 100%)' : settleCountdown > 15 ? 'linear-gradient(90deg, #FFD93D, #FF9F45)' : 'linear-gradient(90deg, #FF6B6B, #FF9F45)'}}"></view>
+        </view>
+        <view wx:if="{{room.currentUserSubmitted}}" style="text-align:center;padding:40rpx 0;">
+          <text style="font-size:40rpx">✅</text>
+          <text style="display:block;font-size:28rpx;font-weight:600;color:#6BCB77;margin-top:12rpx;">已提交，等待其他成员…</text>
+          <text style="display:block;font-size:22rpx;color:#7F8C8D;margin-top:8rpx;">提交进度：{{settleSubmitted}}/{{settleTotal}}</text>
+        </view>
+        <block wx:else>
+          <view class="room__settle-inputs">
+            <view class="room__settle-field">
+              <view class="room__settle-field-header">
+                <text class="room__settle-field-icon">💰</text>
+                <text class="room__settle-field-label" style="color:#6BCB77">收入金额</text>
+              </view>
+              <input class="room__settle-field-input" type="digit" placeholder="0" value="{{settleInput.income}}" bindinput="onIncomeInput" style="{{settleInput.income ? 'border-color:#6BCB77;background:#E8F8ED;color:#6BCB77' : ''}}" />
+            </view>
+            <view class="room__settle-field">
+              <view class="room__settle-field-header">
+                <text class="room__settle-field-icon">💸</text>
+                <text class="room__settle-field-label" style="color:#FF6B6B">支出金额</text>
+              </view>
+              <input class="room__settle-field-input" type="digit" placeholder="0" value="{{settleInput.expense}}" bindinput="onExpenseInput" style="{{settleInput.expense ? 'border-color:#FF6B6B;background:#FFF2F2;color:#FF6B6B' : ''}}" />
+            </view>
+          </view>
+          <view class="room__settle-quick">
+            <button class="room__settle-quick-btn" bindtap="onQuickIncome" data-amount="50">+50</button>
+            <button class="room__settle-quick-btn" bindtap="onQuickIncome" data-amount="100">+100</button>
+            <button class="room__settle-quick-btn" bindtap="onQuickIncome" data-amount="200">+200</button>
+            <button class="room__settle-quick-btn" bindtap="onQuickIncome" data-amount="500">+500</button>
+          </view>
+          <view wx:if="{{settleNet !== 0}}" class="room__settle-net {{settleNet >= 0 ? 'room__settle-net--profit' : 'room__settle-net--loss'}}">
+            <text class="room__settle-net-icon">{{settleNet >= 0 ? '📈' : '📉'}}</text>
+            <text class="room__settle-net-text" style="color:{{settleNet >= 0 ? '#6BCB77' : '#FF6B6B'}}">
+              本局净{{settleNet >= 0 ? '收益' : '支出'}}：{{settleNet >= 0 ? '+' : ''}}{{settleNet}} 积分
+            </text>
+          </view>
+          <button class="room__settle-submit" bindtap="onSettleSubmit">✅ 提交本局数据</button>
+          <text class="room__settle-footer">倒计时结束后未提交将自动视为 0 分</text>
+        </block>
+      </view>
+    </view>
+  </view>
+
+  <!-- ===== 9. 操作菜单 Sheet - Figma ===== -->
+  <view wx:if="{{actionSheetVisible}}" class="room__sheet-overlay" bindtap="onCloseActionSheet">
+    <view class="room__sheet" catchtap>
+      <view class="room__sheet-handle">
+        <view class="room__sheet-handle-bar"></view>
+      </view>
+      <view class="room__sheet-header">
+        <text class="room__sheet-title">⚙️ 操作菜单</text>
+        <button class="room__sheet-close" bindtap="onCloseActionSheet">×</button>
+      </view>
+      <view class="room__sheet-body">
+        <view class="room__action-list">
+          <text wx:if="{{room.isOwner}}" class="room__action-owner-badge">👑 你是房主，拥有额外权限</text>
+          <button class="room__action-item" style="color:#2C3E50" bindtap="onViewFlow">
+            <text class="room__action-icon">📋</text> 查看流水单
+          </button>
+          <button class="room__action-item" style="color:#FF9F45" bindtap="onExitRoom">
+            <text class="room__action-icon">🚪</text> 退出房间
+          </button>
+          <block wx:if="{{room.isOwner}}">
+            <button class="room__action-item" style="color:#2C3E50" bindtap="onSwitchMode">
+              <text class="room__action-icon">⚙️</text> 切换结算模式
+            </button>
+            <button class="room__action-item" style="color:#2C3E50" bindtap="onOpenSettings">
+              <text class="room__action-icon">🎨</text> 牌桌皮肤设置
+            </button>
+            <button class="room__action-item" style="color:#4ECDC4" bindtap="onSettleFinal">
+              <text class="room__action-icon">🏁</text> 房间结算（终局）
+            </button>
+            <button class="room__action-item" style="color:#FF6B6B" bindtap="onDissolveRoom">
+              <text class="room__action-icon">💥</text> 解散房间
+            </button>
+          </block>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- ===== 10. 皮肤设置 Sheet - Figma ===== -->
+  <view wx:if="{{skinSheetVisible}}" class="room__sheet-overlay" bindtap="onCloseSkinSheet">
+    <view class="room__sheet" catchtap>
+      <view class="room__sheet-handle">
+        <view class="room__sheet-handle-bar"></view>
+      </view>
+      <view class="room__sheet-header">
+        <text class="room__sheet-title">🎨 牌桌皮肤</text>
+        <button class="room__sheet-close" bindtap="onCloseSkinSheet">×</button>
+      </view>
+      <view class="room__sheet-body">
+        <view class="room__skin-grid">
+          <view
+            class="room__skin-item {{room.skin === item.key ? 'is-active' : ''}}"
+            wx:for="{{skinList}}"
+            wx:key="key"
+            data-skin="{{item.key}}"
+            bindtap="onSettingsSelectSkin"
+          >
+            <view class="room__skin-preview" style="background:{{item.bg || item.color}}">
+              <view class="room__skin-chip" style="background:#FFD93D;"></view>
+              <view class="room__skin-chip" style="background:#6BCB77;"></view>
+              <view class="room__skin-chip" style="background:#FF6B6B;"></view>
+            </view>
+            <view class="room__skin-name">
+              <text wx:if="{{room.skin === item.key}}" class="room__skin-check">✓</text>
+              <text class="room__skin-name-text">{{item.name}}</text>
+            </view>
+          </view>
+        </view>
+        <button class="room__skin-apply" bindtap="onCloseSkinSheet">应用皮肤</button>
+      </view>
+    </view>
+  </view>
+
+  <!-- ===== 11. 结算报告 Sheet (FinalSheet) - Figma ===== -->
+  <view wx:if="{{finalSheetVisible}}" class="room__sheet-overlay" bindtap="onCloseFinalSheet">
+    <view class="room__sheet" catchtap>
+      <view class="room__sheet-handle">
+        <view class="room__sheet-handle-bar"></view>
+      </view>
+      <view class="room__sheet-header">
+        <text class="room__sheet-title">🏆 房间结算报告</text>
+        <button class="room__sheet-close" bindtap="onCloseFinalSheet">×</button>
+      </view>
+      <view class="room__sheet-body">
+        <text style="font-size:22rpx;color:#7F8C8D;display:block;margin-bottom:20rpx;">房间 {{roomNo}} · 共 {{room.round || 12}} 局 · 仅统计有效用户</text>
+        <view class="room__final-item room__final-item--win" wx:for="{{finalData}}" wx:key="userId" wx:for-index="i">
+          <text class="room__final-rank">{{i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : i + 1}}</text>
+          <text class="room__final-emoji">🤠</text>
+          <view class="room__final-info">
+            <text class="room__final-name">{{item.nickname || '牌友'}}</text>
+            <text class="room__final-tag" style="background:{{item.score > 100 ? '#6BCB77' : item.score > 0 ? '#8DCB96' : item.score < -100 ? '#FF6B6B' : item.score < 0 ? '#FF9F9F' : '#7F8C8D'}}">
+              {{item.score > 100 ? '大赢家' : item.score > 0 ? '小赢' : item.score < -100 ? '大输家' : item.score < 0 ? '小输' : '保本'}}
+            </text>
+          </view>
+          <text class="room__final-score {{item.score > 0 ? 'text-success' : item.score < 0 ? 'text-danger' : ''}}">{{item.score > 0 ? '+' : ''}}{{item.score}}</text>
+        </view>
+        <button class="room__final-share" bindtap="onShareFinal">📤 分享战绩</button>
+        <button class="room__final-dissolve" bindtap="onGoHome">💥 返回首页</button>
+      </view>
+    </view>
+  </view>
+
+  <!-- ===== 12. 确认弹窗 - Figma ===== -->
+  <view wx:if="{{confirmVisible}}" class="room__confirm-overlay">
+    <view class="room__confirm-dialog">
+      <text class="room__confirm-icon">⚠️</text>
+      <text class="room__confirm-msg">{{confirmMsg}}</text>
+      <view class="room__confirm-actions">
+        <button class="room__confirm-cancel" bindtap="onConfirmCancel">返回</button>
+        <button class="room__confirm-ok {{confirmDanger ? 'room__confirm-ok--danger' : ''}}" bindtap="onConfirmOk">{{confirmLabel}}</button>
+      </view>
+    </view>
+  </view>
+</view>

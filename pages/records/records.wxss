@@ -1,0 +1,198 @@
+/* pages/records/records.wxss - 战绩查询 - 完全照搬Figma设计 */
+.records {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  overflow: hidden;
+}
+
+.records__header {
+  background: var(--mint-grad);
+  padding: 28rpx 32rpx;
+  display: flex;
+  align-items: center;
+  gap: 24rpx;
+  flex-shrink: 0;
+}
+
+.records__back {
+  font-size: 28rpx;
+  color: #fff;
+  padding: 0;
+  background: none;
+  border: none;
+  margin: 0;
+  line-height: 1;
+}
+
+.records__back::after { border: none; }
+
+.records__header-title {
+  font-size: 32rpx;
+  font-weight: 800;
+  color: #fff;
+}
+
+.records__body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 32rpx;
+}
+
+/* 统计网格 */
+.records__stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20rpx;
+  margin-bottom: 32rpx;
+}
+
+.records__stat-card {
+  background: var(--card);
+  border-radius: 32rpx;
+  padding: 28rpx;
+  text-align: center;
+  box-shadow: 0 4rpx 20rpx rgba(0,0,0,0.06);
+}
+
+.records__stat-value {
+  font-size: 40rpx;
+  font-weight: 900;
+  color: var(--mint);
+}
+
+.records__stat-label {
+  font-size: 22rpx;
+  color: var(--text-sub);
+  margin-top: 6rpx;
+}
+
+/* 趋势图 */
+.records__trend {
+  background: var(--card);
+  border-radius: 36rpx;
+  padding: 32rpx 32rpx 24rpx;
+  box-shadow: 0 4rpx 24rpx rgba(0,0,0,0.06);
+  margin-bottom: 32rpx;
+}
+
+.records__trend-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24rpx;
+}
+
+.records__trend-title {
+  font-size: 26rpx;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.records__trend-badge {
+  font-size: 22rpx;
+  color: var(--mint);
+  font-weight: 600;
+  background: var(--mint-light);
+  padding: 6rpx 20rpx;
+  border-radius: 20rpx;
+}
+
+.records__trend-chart {
+  width: 100%;
+  height: 180rpx;
+  position: relative;
+  overflow: visible;
+}
+
+.records__trend-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 12rpx;
+}
+
+.records__trend-label {
+  font-size: 18rpx;
+  color: var(--text-sub);
+}
+
+/* 场次明细 */
+.records__list-title {
+  font-size: 26rpx;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 20rpx;
+}
+
+.records__list {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+
+.records__match {
+  background: var(--card);
+  border-radius: 32rpx;
+  padding: 28rpx;
+  display: flex;
+  align-items: center;
+  gap: 24rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0,0,0,0.06);
+}
+
+.records__match-icon {
+  width: 88rpx;
+  height: 88rpx;
+  border-radius: 24rpx;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 44rpx;
+}
+
+.records__match-icon--win { background: var(--green-light); }
+.records__match-icon--lose { background: var(--red-light); }
+.records__match-icon--even { background: var(--mode-bar); }
+
+.records__match-info {
+  flex: 1;
+}
+
+.records__match-room {
+  font-size: 26rpx;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.records__match-meta {
+  font-size: 22rpx;
+  color: var(--text-sub);
+  margin-top: 4rpx;
+}
+
+.records__match-score {
+  text-align: right;
+}
+
+.records__match-score-value {
+  font-size: 32rpx;
+  font-weight: 900;
+}
+
+.records__match-score-label {
+  font-size: 18rpx;
+  color: var(--text-sub);
+}
+
+.records__loading {
+  text-align: center;
+  padding: 80rpx 0;
+  color: var(--text-sub);
+  font-size: 28rpx;
+}
+
+.records__empty {
+  padding: 80rpx 0;
+}

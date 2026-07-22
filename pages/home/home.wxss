@@ -1,0 +1,382 @@
+/* pages/home/home.wxss - 首页 + 加入房间弹窗 */
+.home {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: #F8FAFB;
+  overflow: hidden;
+  position: relative;
+}
+
+/* ===== Hero ===== */
+.hero {
+  background: linear-gradient(135deg, #4ECDC4 0%, #45B7D1 100%);
+  padding: 48rpx 40rpx 56rpx;
+  border-radius: 0 0 64rpx 64rpx;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.hero__circle-1 {
+  position: absolute;
+  top: -40rpx;
+  right: -40rpx;
+  width: 180rpx;
+  height: 180rpx;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.1);
+}
+
+.hero__circle-2 {
+  position: absolute;
+  bottom: -30rpx;
+  left: -30rpx;
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.08);
+}
+
+.hero__icon {
+  font-size: 80rpx;
+  margin-bottom: 16rpx;
+  position: relative;
+  display: block;
+}
+
+.hero__title {
+  font-size: 36rpx;
+  font-weight: 900;
+  color: #fff;
+  letter-spacing: 2rpx;
+  position: relative;
+  display: block;
+}
+
+.hero__subtitle {
+  font-size: 22rpx;
+  color: rgba(255,255,255,0.88);
+  margin-top: 8rpx;
+  position: relative;
+  display: block;
+}
+
+/* ===== Action Buttons ===== */
+.actions {
+  padding: 32rpx 40rpx 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+.actions__create {
+  width: 100%;
+  padding: 28rpx 0;
+  border-radius: 32rpx;
+  background: linear-gradient(135deg, #4ECDC4 0%, #45B7D1 100%);
+  border: none;
+  box-shadow: 0 8rpx 32rpx rgba(78,205,196,0.4);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8rpx;
+  margin: 0;
+}
+
+.actions__create::after { border: none; }
+.actions__create:active { opacity: 0.9; }
+
+.actions__create-icon { font-size: 48rpx; display: block; }
+.actions__create-text { font-size: 28rpx; font-weight: 900; color: #fff; display: block; }
+.actions__create-desc { font-size: 20rpx; color: rgba(255,255,255,0.85); display: block; }
+
+.actions__join {
+  width: 100%;
+  padding: 28rpx 0;
+  border-radius: 32rpx;
+  background: #FFFFFF;
+  border: 3rpx solid #4ECDC4;
+  box-shadow: 0 4rpx 16rpx rgba(78,205,196,0.15);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8rpx;
+  margin: 0;
+}
+
+.actions__join::after { border: none; }
+.actions__join:active { opacity: 0.9; }
+
+.actions__join-icon { font-size: 48rpx; display: block; }
+.actions__join-text { font-size: 28rpx; font-weight: 900; color: #4ECDC4; display: block; }
+.actions__join-desc { font-size: 20rpx; color: #7F8C8D; display: block; }
+
+/* ===== Current room card ===== */
+.room-card-wrap { padding: 24rpx 40rpx 0; }
+
+.room-card {
+  background: #FFFFFF;
+  border-radius: 24rpx;
+  padding: 24rpx;
+  border: 3rpx solid #4ECDC4;
+  box-shadow: 0 4rpx 20rpx rgba(78,205,196,0.18);
+}
+
+.room-card__header {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  margin-bottom: 12rpx;
+}
+
+.room-card__icon { font-size: 32rpx; display: block; }
+.room-card__label { font-size: 24rpx; font-weight: 700; color: #2C3E50; display: block; }
+
+.room-card__badge {
+  margin-left: auto;
+  font-size: 20rpx;
+  font-weight: 700;
+  background: #E8F8ED;
+  color: #6BCB77;
+  padding: 4rpx 16rpx;
+  border-radius: 16rpx;
+  display: block;
+}
+
+.room-card__info { font-size: 22rpx; color: #7F8C8D; margin-bottom: 16rpx; display: block; }
+.room-card__info-value { color: #4ECDC4; font-weight: 800; letter-spacing: 4rpx; }
+
+.room-card__btn {
+  width: 100%;
+  padding: 18rpx;
+  border-radius: 20rpx;
+  background: linear-gradient(135deg, #4ECDC4 0%, #45B7D1 100%);
+  border: none;
+  color: #fff;
+  font-size: 24rpx;
+  font-weight: 700;
+  box-shadow: 0 4rpx 12rpx rgba(78,205,196,0.3);
+  margin: 0;
+}
+
+.room-card__btn::after { border: none; }
+.room-card__btn:active { opacity: 0.9; }
+
+/* ===== 使用指南 ===== */
+.guide {
+  padding: 20rpx 40rpx 32rpx;
+  margin-top: auto;
+}
+
+.guide__divider {
+  font-size: 18rpx;
+  color: #E8ECEF;
+  letter-spacing: 2rpx;
+  text-align: center;
+  margin-bottom: 12rpx;
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.guide__divider::before,
+.guide__divider::after {
+  content: '';
+  flex: 1;
+  height: 2rpx;
+  background: #E8ECEF;
+}
+
+.guide__steps { display: flex; flex-direction: column; gap: 12rpx; }
+
+.guide__step {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  padding: 16rpx 20rpx;
+  background: #E8F8F7;
+  border-radius: 20rpx;
+  border: 2rpx solid #E8ECEF;
+}
+
+.guide__step-num {
+  width: 36rpx;
+  height: 36rpx;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #4ECDC4 0%, #45B7D1 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18rpx;
+  font-weight: 800;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.guide__step-text { font-size: 20rpx; color: #2C3E50; font-weight: 500; flex: 1; line-height: 1.4; }
+.guide__step-icon { font-size: 28rpx; flex-shrink: 0; }
+
+/* ================================================
+   加入房间弹窗 - 完全照搬Figma JoinSheet设计
+   ================================================ */
+.join-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: rgba(0,0,0,0.52);
+  display: flex;
+  align-items: flex-end;
+}
+
+.join-sheet {
+  background: #FFFFFF;
+  border-radius: 40rpx 40rpx 0 0;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 -12rpx 64rpx rgba(0,0,0,0.14);
+  padding-bottom: 60rpx;
+  width: 100%;
+}
+
+.join-handle {
+  display: flex;
+  justify-content: center;
+  padding: 24rpx 0 0;
+}
+
+.join-handle-bar {
+  width: 72rpx;
+  height: 8rpx;
+  border-radius: 4rpx;
+  background: #E8ECEF;
+}
+
+.join-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20rpx 40rpx 0;
+  position: relative;
+}
+
+.join-title {
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #2C3E50;
+  flex: 1;
+}
+
+.join-close {
+  font-size: 36rpx;
+  color: #7F8C8D;
+  width: 60rpx;
+  height: 60rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.join-close::after { border: none; }
+
+.join-body {
+  padding: 32rpx 40rpx 0;
+  display: flex;
+  flex-direction: column;
+  gap: 28rpx;
+}
+
+/* 扫码区域 - Figma: dashed border, 22px padding */
+.join-scan {
+  background: #F8FAFB;
+  border-radius: 32rpx;
+  padding: 44rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16rpx;
+  border: 4rpx dashed #E8ECEF;
+}
+
+.join-scan-icon {
+  font-size: 80rpx;
+}
+
+.join-scan-title {
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #2C3E50;
+}
+
+.join-scan-desc {
+  font-size: 24rpx;
+  color: #7F8C8D;
+}
+
+/* 分隔线 - Figma: or 输入房间号 */
+.join-divider {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+}
+
+.join-divider-line {
+  flex: 1;
+  height: 2rpx;
+  background: #E8ECEF;
+}
+
+.join-divider-text {
+  font-size: 24rpx;
+  color: #7F8C8D;
+  white-space: nowrap;
+}
+
+/* 输入框 - 加高，字体缩小 */
+.join-input {
+  width: 100%;
+  padding: 44rpx 28rpx;
+  border-radius: 32rpx;
+  font-size: 36rpx;
+  font-weight: 800;
+  letter-spacing: 20rpx;
+  text-align: center;
+  outline: none;
+  color: #2C3E50;
+  background: #F8FAFB;
+  border: 3rpx solid #E8ECEF;
+  box-sizing: border-box;
+  height: 120rpx;
+  line-height: 1;
+}
+
+.join-input.has-value {
+  border-color: #4ECDC4;
+}
+
+/* 加入按钮 - Figma: 渐变, 22px border-radius */
+.join-btn {
+  width: 100%;
+  padding: 30rpx;
+  border-radius: 44rpx;
+  font-size: 30rpx;
+  font-weight: 700;
+  border: none;
+  margin: 0;
+}
+
+.join-btn::after { border: none; }
+
+.join-btn--active {
+  background: linear-gradient(135deg, #4ECDC4 0%, #45B7D1 100%);
+  color: #fff;
+  box-shadow: 0 8rpx 32rpx rgba(78,205,196,0.42);
+}
+
+.join-btn--disabled {
+  background: #E8ECEF;
+  color: #7F8C8D;
+}

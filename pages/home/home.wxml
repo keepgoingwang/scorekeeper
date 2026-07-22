@@ -1,0 +1,113 @@
+<!--pages/home/home.wxml - 首页 + 加入房间弹窗（Figma JoinSheet）-->
+<view class="home">
+  <!-- Hero -->
+  <view class="hero">
+    <view class="hero__circle-1"></view>
+    <view class="hero__circle-2"></view>
+    <text class="hero__icon">🀄</text>
+    <text class="hero__title">牌桌记分</text>
+    <text class="hero__subtitle">打牌计分，一键搞定</text>
+  </view>
+
+  <!-- Action Buttons -->
+  <view class="actions">
+    <button class="actions__create" bindtap="onCreateRoom">
+      <text class="actions__create-icon">🎲</text>
+      <text class="actions__create-text">创建房间</text>
+      <text class="actions__create-desc">点击快速开启牌局</text>
+    </button>
+    <button class="actions__join" bindtap="onJoinRoom">
+      <text class="actions__join-icon">📷</text>
+      <text class="actions__join-text">加入房间</text>
+      <text class="actions__join-desc">扫码或输入房间号加入</text>
+    </button>
+  </view>
+
+  <!-- Current room card -->
+  <view wx:if="{{currentRoom}}" class="room-card-wrap">
+    <view class="room-card">
+      <view class="room-card__header">
+        <text class="room-card__icon">🏠</text>
+        <text class="room-card__label">当前所在房间</text>
+        <text class="room-card__badge">进行中</text>
+      </view>
+      <text class="room-card__info">
+        房间号：<text class="room-card__info-value">{{currentRoom.roomNo}}</text>
+        <text wx:if="{{currentRoom.memberCount}}"> · 成员：{{currentRoom.memberCount}}人</text>
+      </text>
+      <button class="room-card__btn" bindtap="onReturnRoom">点击返回房间</button>
+    </view>
+  </view>
+
+  <!-- 使用指南 -->
+  <view class="guide">
+    <view class="guide__divider">使用指南</view>
+    <view class="guide__steps">
+      <view class="guide__step">
+        <text class="guide__step-num">1</text>
+        <text class="guide__step-text">点击「创建房间」快速开启牌局</text>
+        <text class="guide__step-icon">🎲</text>
+      </view>
+      <view class="guide__step">
+        <text class="guide__step-num">2</text>
+        <text class="guide__step-text">邀请好友扫码或输入房间号加入</text>
+        <text class="guide__step-icon">📤</text>
+      </view>
+      <view class="guide__step">
+        <text class="guide__step-num">3</text>
+        <text class="guide__step-text">结算时选择「自动结算」或「手动结算」</text>
+        <text class="guide__step-icon">⚡</text>
+      </view>
+      <view class="guide__step">
+        <text class="guide__step-num">4</text>
+        <text class="guide__step-text">查看战绩、流水，随时掌握输赢</text>
+        <text class="guide__step-icon">📊</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- ===== 加入房间弹窗 - Figma JoinSheet ===== -->
+  <view wx:if="{{joinVisible}}" class="join-overlay" bindtap="onCloseJoin">
+    <view class="join-sheet" catchtap>
+      <view class="join-handle">
+        <view class="join-handle-bar"></view>
+      </view>
+      <view class="join-header">
+        <text class="join-title">加入房间</text>
+        <view class="join-close" bindtap="onCloseJoin">✕</view>
+      </view>
+      <view class="join-body">
+        <!-- 扫码加入 - Figma: dashed border, clickable -->
+        <view class="join-scan" bindtap="onJoinByScan">
+          <text class="join-scan-icon">📷</text>
+          <text class="join-scan-title">扫码加入</text>
+          <text class="join-scan-desc">扫描房主分享的二维码</text>
+        </view>
+
+        <!-- 分隔线 - Figma: or 输入房间号 -->
+        <view class="join-divider">
+          <view class="join-divider-line"></view>
+          <text class="join-divider-text">或输入房间号</text>
+          <view class="join-divider-line"></view>
+        </view>
+
+        <!-- 输入框 - Figma: 6位数字, 居中 -->
+        <input
+          class="join-input {{joinCode.length === 6 ? 'has-value' : ''}}"
+          type="digit"
+          maxlength="6"
+          placeholder="请输入6位房间号"
+          value="{{joinCode}}"
+          bindinput="onJoinCodeInput"
+        />
+
+        <!-- 加入按钮 - Figma: 6位数字后激活 -->
+        <button
+          class="join-btn {{joinCode.length === 6 ? 'join-btn--active' : 'join-btn--disabled'}}"
+          disabled="{{joinCode.length !== 6}}"
+          bindtap="onJoinByCode"
+        >🔍 加入房间</button>
+      </view>
+    </view>
+  </view>
+</view>

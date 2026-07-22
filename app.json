@@ -1,0 +1,36 @@
+{
+  "pages": [
+    "pages/home/home",
+    "pages/login/login",
+    "pages/profile/profile",
+    "pages/room/room",
+    "pages/scan/scan",
+    "pages/flow/flow",
+    "pages/settle-report/settle-report",
+    "pages/records/records",
+    "pages/settings/settings",
+    "pages/profile-edit/profile-edit",
+    "pages/help/help",
+    "pages/contact/contact"
+  ],
+  "window": {
+    "navigationBarBackgroundColor": "#F8FAFB",
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "牌桌记分",
+    "backgroundColor": "#F8FAFB",
+    "backgroundTextStyle": "dark"
+  },
+  "tabBar": {
+    "color": "#7F8C8D",
+    "selectedColor": "#4ECDC4",
+    "backgroundColor": "#FFFFFF",
+    "borderStyle": "white",
+    "list": [
+      { "pagePath": "pages/home/home", "text": "首页" },
+      { "pagePath": "pages/profile/profile", "text": "我的" }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents"
+}

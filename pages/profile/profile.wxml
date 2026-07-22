@@ -1,0 +1,80 @@
+<!--pages/profile/profile.wxml - 我的页面 - 完全照搬Figma设计-->
+<view class="profile">
+  <!-- 头部渐变 -->
+  <view class="profile__header">
+    <text class="profile__header-title">我的</text>
+  </view>
+
+  <!-- 用户卡片（浮动在头部下方） -->
+  <view class="profile__card-wrap">
+    <view class="profile__card">
+      <view class="profile__card-top">
+        <image
+          wx:if="{{avatarUrl}}"
+          class="profile__avatar"
+          src="{{avatarUrl}}"
+          mode="aspectFill"
+        />
+        <view wx:else class="profile__avatar">{{userInfo.nickname ? userInfo.nickname[0] : '🤠'}}</view>
+        <view class="profile__info">
+          <view class="profile__name">{{userInfo.nickname || '未登录'}}</view>
+          <view class="profile__id">ID: {{userInfo._id ? userInfo._id.slice(-8) : '—'}}</view>
+        </view>
+        <view class="profile__edit" bindtap="onEditProfile">编辑资料</view>
+      </view>
+      <!-- 统计行 -->
+      <view class="profile__stats">
+        <view class="profile__stat">
+          <text class="profile__stat-value">{{stats.games || 0}}</text>
+          <text class="profile__stat-label">参与场次</text>
+        </view>
+        <view class="profile__stat">
+          <text class="profile__stat-value">{{stats.winRate || 0}}%</text>
+          <text class="profile__stat-label">胜率</text>
+        </view>
+        <view class="profile__stat">
+          <text class="profile__stat-value">{{stats.totalScore > 0 ? '+' : ''}}{{stats.totalScore || 0}}</text>
+          <text class="profile__stat-label">累计积分</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 功能列表 -->
+  <view class="profile__menu-wrap">
+    <view class="profile__menu">
+      <view class="profile__menu-item" bindtap="onRecords">
+        <view class="profile__menu-icon-box">📊</view>
+        <view class="profile__menu-text">
+          <text class="profile__menu-label">战绩查询</text>
+          <text class="profile__menu-sub">查看历史房间记录</text>
+        </view>
+        <text class="profile__menu-arrow">›</text>
+      </view>
+      <view class="profile__menu-item" bindtap="onSettings">
+        <view class="profile__menu-icon-box">⚙️</view>
+        <view class="profile__menu-text">
+          <text class="profile__menu-label">系统设置</text>
+          <text class="profile__menu-sub">牌桌皮肤、通知设置</text>
+        </view>
+        <text class="profile__menu-arrow">›</text>
+      </view>
+      <view class="profile__menu-item" bindtap="onHelp">
+        <view class="profile__menu-icon-box">❓</view>
+        <view class="profile__menu-text">
+          <text class="profile__menu-label">帮助反馈</text>
+          <text class="profile__menu-sub">FAQ · 意见反馈</text>
+        </view>
+        <text class="profile__menu-arrow">›</text>
+      </view>
+      <view class="profile__menu-item" bindtap="onContact">
+        <view class="profile__menu-icon-box">📋</view>
+        <view class="profile__menu-text">
+          <text class="profile__menu-label">联系我们</text>
+          <text class="profile__menu-sub">客服 · 版本 · 协议</text>
+        </view>
+        <text class="profile__menu-arrow">›</text>
+      </view>
+    </view>
+  </view>
+</view>

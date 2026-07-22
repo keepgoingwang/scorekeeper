@@ -1,0 +1,41 @@
+<!--pages/login/login.wxml - 登录页 - 修复版-->
+<view class="login">
+  <view class="login__header">
+    <view class="login__logo-wrap">
+      <text class="login__logo">🃏</text>
+    </view>
+    <text class="login__title">欢迎使用棋牌计分</text>
+    <text class="login__desc">使用微信登录，开启记分之旅</text>
+  </view>
+
+  <view class="login__card">
+    <!-- 头像选择 - view包裹button确保正圆形 -->
+    <view class="login__avatar-wrap">
+      <button class="login__avatar" open-type="chooseAvatar" bindchooseavatar="onChooseAvatar">
+        <image wx:if="{{avatar}}" class="login__avatar-img" src="{{avatar}}" mode="aspectFill" />
+        <text wx:else class="login__avatar-tip">点击选择头像</text>
+      </button>
+    </view>
+    <text wx:if="{{avatar}}" class="login__avatar-label">点击更换头像</text>
+
+    <input
+      class="login__nickname"
+      type="nickname"
+      placeholder="请输入昵称"
+      bindinput="onNicknameInput"
+      bindblur="onNicknameInput"
+    />
+
+    <button
+      class="login__submit"
+      bindtap="onLogin"
+      loading="{{loading}}"
+    >微信登录</button>
+  </view>
+
+  <view class="login__footer">
+    <text class="login__hint">
+      登录即代表同意<text class="login__hint-link">《用户协议》</text>与<text class="login__hint-link">《隐私政策》</text>
+    </text>
+  </view>
+</view>

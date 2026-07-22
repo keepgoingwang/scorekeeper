@@ -1,0 +1,66 @@
+<!--pages/settle-report/settle-report.wxml - 结算报告 - 完全照搬Figma设计-->
+<view class="settle-report">
+  <view wx:if="{{loading}}" class="settle-report__loading">加载中…</view>
+
+  <block wx:else>
+    <view class="settle-report__header" wx:if="{{report}}">
+      <text class="settle-report__title">🏆 结算报告</text>
+      <text class="settle-report__room">房间 {{roomNo}} · 共 {{report.round || 12}} 局 · 仅统计有效用户</text>
+    </view>
+
+    <view class="settle-report__body" wx:if="{{report}}">
+      <!-- 排名列表 -->
+      <view class="settle-report__section">
+        <view class="settle-report__section-title">📊 最终排名</view>
+        <view
+          class="settle-report__rank-item {{item.score > 0 ? 'settle-report__rank-item--win' : item.score < 0 ? 'settle-report__rank-item--lose' : 'settle-report__rank-item--normal'}}"
+          wx:for="{{report.ranking}}"
+          wx:key="userId"
+          wx:for-index="index"
+        >
+          <text class="settle-report__rank-no">
+            {{index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : index + 1}}
+          </text>
+          <text class="settle-report__rank-emoji">🤠</text>
+          <view class="settle-report__rank-info">
+            <text class="settle-report__rank-name">{{item.nickname || '牌友'}}</text>
+            <text
+              class="settle-report__rank-tag"
+              style="background:{{item.score > 100 ? '#6BCB77' : item.score > 0 ? '#8DCB96' : item.score < -100 ? '#FF6B6B' : item.score < 0 ? '#FF9F9F' : '#7F8C8D'}}"
+            >
+              {{item.score > 100 ? '大赢家' : item.score > 0 ? '小赢' : item.score < -100 ? '大输家' : item.score < 0 ? '小输' : '保本'}}
+            </text>
+          </view>
+          <text class="settle-report__rank-score {{item.score > 0 ? 'text-success' : item.score < 0 ? 'text-danger' : ''}}">
+            {{item.score > 0 ? '+' : ''}}{{item.score}}
+          </text>
+        </view>
+      </view>
+
+      <!-- 建议转账方案 -->
+      <view class="settle-report__transfer" wx:if="{{report.transferPlan && report.transferPlan.length}}">
+        <text class="settle-report__transfer-title">💰 建议转账（最小化次数）</text>
+        <view
+          class="settle-report__transfer-item"
+          wx:for="{{report.transferPlan}}"
+          wx:key="index"
+        >
+          <text class="settle-report__transfer-from">{{item.fromNickname || '牌友'}}</text>
+          <text>→</text>
+          <text class="settle-report__transfer-to">{{item.toNickname || '牌友'}}</text>
+          <text class="settle-report__transfer-amount">¥{{item.amount}}</text>
+        </view>
+      </view>
+
+      <!-- 操作按钮 -->
+      <view class="settle-report__actions">
+        <button class="settle-report__share-btn" bindtap="onShare">📤 分享战绩</button>
+        <button class="settle-report__dissolve-btn" bindtap="onGoHome">💥 返回首页</button>
+      </view>
+    </view>
+
+    <view wx:else class="settle-report__empty">
+      <empty-state text="暂无结算数据"></empty-state>
+    </view>
+  </block>
+</view>
