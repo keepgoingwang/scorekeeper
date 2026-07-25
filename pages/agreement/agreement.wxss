@@ -1,0 +1,45 @@
+/* pages/agreement/agreement.wxss */
+.page {
+  padding: 48rpx 40rpx 80rpx;
+  background: #F8FAFB;
+  min-height: 100vh;
+}
+
+.page__header {
+  margin-bottom: 40rpx;
+}
+
+.page__title {
+  font-size: 36rpx;
+  font-weight: 900;
+  color: #2C3E50;
+  display: block;
+}
+
+.page__update {
+  font-size: 22rpx;
+  color: #7F8C8D;
+  margin-top: 8rpx;
+  display: block;
+}
+
+.page__body {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+.page__section {
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #2C3E50;
+  margin-top: 24rpx;
+  display: block;
+}
+
+.page__text {
+  font-size: 26rpx;
+  color: #555;
+  line-height: 1.8;
+  display: block;
+}

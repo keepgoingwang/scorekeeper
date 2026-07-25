@@ -1,13 +1,6 @@
 <!--pages/room/room.wxml - 房间页 - 完全照搬Figma设计 -->
 <view class="room">
-  <!-- ===== 1. 导航栏 - Figma: white bg, 10px 16px ===== -->
-  <view class="room__navbar">
-    <button class="room__back" bindtap="onBack">← 返回</button>
-    <text class="room__title">房间号：<text class="room__title-value">{{roomNo}}</text></text>
-    <button class="room__gear" bindtap="onOpenSettings">⚙️</button>
-  </view>
-
-  <!-- ===== 2. 头像区 - Figma: scrolling + fixed invite ===== -->
+  <!-- ===== 1. 头像区 - Figma: scrolling + fixed invite ===== -->
   <view class="room__avatars-row">
     <scroll-view class="room__avatars-scroll" scroll-x enhanced show-scrollbar="{{false}}">
       <view
@@ -297,7 +290,78 @@
     </view>
   </view>
 
-  <!-- ===== 9. 操作菜单 Sheet - Figma ===== -->
+  <!-- ===== 9. 手动结算 - 选择收款方 (ManualPaySheet) - Figma ===== -->
+  <view wx:if="{{manualPayVisible}}" class="room__sheet-overlay" bindtap="onClosePay">
+    <view class="room__sheet" catchtap>
+      <view class="room__sheet-handle">
+        <view class="room__sheet-handle-bar"></view>
+      </view>
+      <view class="room__sheet-header">
+        <text class="room__sheet-title">💸 选择收款方</text>
+        <button class="room__sheet-close" bindtap="onClosePay">✕</button>
+      </view>
+      <view class="room__sheet-body">
+        <text class="room__pay-hint">选择收款玩家（仅显示房间内有效用户）</text>
+        <view wx:if="{{manualPayees.length > 0}}" class="room__pay-list">
+          <view
+            class="room__pay-item"
+            wx:for="{{manualPayees}}"
+            wx:key="userId"
+            data-index="{{index}}"
+            bindtap="onSelectPayee"
+          >
+            <view class="room__pay-avatar">
+              <image wx:if="{{item.avatar}}" class="room__pay-avatar-img" src="{{item.avatar}}" mode="aspectFill" />
+              <text wx:else style="font-size:48rpx">{{item.nickname ? item.nickname[0] : '?'}}</text>
+            </view>
+            <view class="room__pay-info">
+              <text class="room__pay-name">{{item.nickname}}</text>
+              <text class="room__pay-score {{item.score > 0 ? 'text-success' : item.score < 0 ? 'text-danger' : ''}}">{{item.score > 0 ? '+' : ''}}{{item.score}} 积分</text>
+            </view>
+            <text class="room__pay-arrow">›</text>
+          </view>
+        </view>
+        <view wx:else class="room__pay-empty">暂无可选收款方</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- ===== 10. 手动结算 - 金额输入 (AmountSheet) - Figma ===== -->
+  <view wx:if="{{manualAmountVisible}}" class="room__sheet-overlay" bindtap="onCloseAmount">
+    <view class="room__sheet" catchtap>
+      <view class="room__sheet-handle">
+        <view class="room__sheet-handle-bar"></view>
+      </view>
+      <view class="room__sheet-header">
+        <text class="room__sheet-title">💸 支付给 {{manualPayee.nickname}}</text>
+        <button class="room__sheet-close" bindtap="onCloseAmount">✕</button>
+      </view>
+      <view class="room__sheet-body">
+        <text class="room__amount-hint">{{manualPayHint}}</text>
+        <input
+          class="room__amount-input"
+          type="digit"
+          placeholder="0"
+          value="{{manualAmount}}"
+          bindinput="onAmountInput"
+          auto-focus
+        />
+        <view class="room__amount-btns">
+          <button class="room__amount-btn" bindtap="onQuickAmount" data-amount="50">50</button>
+          <button class="room__amount-btn" bindtap="onQuickAmount" data-amount="100">100</button>
+          <button class="room__amount-btn" bindtap="onQuickAmount" data-amount="200">200</button>
+          <button class="room__amount-btn" bindtap="onQuickAmount" data-amount="500">500</button>
+        </view>
+        <button
+          class="room__amount-confirm {{manualAmount ? 'room__amount-confirm--active' : ''}}"
+          disabled="{{!manualAmount}}"
+          bindtap="onConfirmPay"
+        >✅ 确认转账</button>
+      </view>
+    </view>
+  </view>
+
+  <!-- ===== 11. 操作菜单 Sheet - Figma ===== -->
   <view wx:if="{{actionSheetVisible}}" class="room__sheet-overlay" bindtap="onCloseActionSheet">
     <view class="room__sheet" catchtap>
       <view class="room__sheet-handle">
@@ -305,37 +369,41 @@
       </view>
       <view class="room__sheet-header">
         <text class="room__sheet-title">⚙️ 操作菜单</text>
-        <button class="room__sheet-close" bindtap="onCloseActionSheet">×</button>
+        <button class="room__sheet-close" bindtap="onCloseActionSheet">✕</button>
       </view>
       <view class="room__sheet-body">
-        <view class="room__action-list">
-          <text wx:if="{{room.isOwner}}" class="room__action-owner-badge">👑 你是房主，拥有额外权限</text>
-          <button class="room__action-item" style="color:#2C3E50" bindtap="onViewFlow">
-            <text class="room__action-icon">📋</text> 查看流水单
+        <text wx:if="{{room.isOwner}}" class="room__action-owner-badge">👑 你是房主，拥有额外权限</text>
+        <button class="room__action-item" style="color:#2C3E50" bindtap="onViewFlow">
+          <text class="room__action-icon">📋</text>
+          <text>查看流水单</text>
+        </button>
+        <button class="room__action-item" style="color:#FF9F45" bindtap="onExitRoom">
+          <text class="room__action-icon">🚪</text>
+          <text>退出房间</text>
+        </button>
+        <block wx:if="{{room.isOwner}}">
+          <button class="room__action-item" style="color:#2C3E50" bindtap="onSwitchMode">
+            <text class="room__action-icon">⚙️</text>
+            <text>切换结算模式</text>
           </button>
-          <button class="room__action-item" style="color:#FF9F45" bindtap="onExitRoom">
-            <text class="room__action-icon">🚪</text> 退出房间
+          <button class="room__action-item" style="color:#2C3E50" bindtap="onOpenSettings">
+            <text class="room__action-icon">🎨</text>
+            <text>牌桌皮肤设置</text>
           </button>
-          <block wx:if="{{room.isOwner}}">
-            <button class="room__action-item" style="color:#2C3E50" bindtap="onSwitchMode">
-              <text class="room__action-icon">⚙️</text> 切换结算模式
-            </button>
-            <button class="room__action-item" style="color:#2C3E50" bindtap="onOpenSettings">
-              <text class="room__action-icon">🎨</text> 牌桌皮肤设置
-            </button>
-            <button class="room__action-item" style="color:#4ECDC4" bindtap="onSettleFinal">
-              <text class="room__action-icon">🏁</text> 房间结算（终局）
-            </button>
-            <button class="room__action-item" style="color:#FF6B6B" bindtap="onDissolveRoom">
-              <text class="room__action-icon">💥</text> 解散房间
-            </button>
-          </block>
-        </view>
+          <button class="room__action-item" style="color:#4ECDC4" bindtap="onSettleFinal">
+            <text class="room__action-icon">🏁</text>
+            <text>房间结算（终局）</text>
+          </button>
+          <button class="room__action-item" style="color:#FF6B6B" bindtap="onDissolveRoom">
+            <text class="room__action-icon">💥</text>
+            <text>解散房间</text>
+          </button>
+        </block>
       </view>
     </view>
   </view>
 
-  <!-- ===== 10. 皮肤设置 Sheet - Figma ===== -->
+  <!-- ===== 12. 皮肤设置 Sheet - Figma ===== -->
   <view wx:if="{{skinSheetVisible}}" class="room__sheet-overlay" bindtap="onCloseSkinSheet">
     <view class="room__sheet" catchtap>
       <view class="room__sheet-handle">
@@ -370,7 +438,7 @@
     </view>
   </view>
 
-  <!-- ===== 11. 结算报告 Sheet (FinalSheet) - Figma ===== -->
+  <!-- ===== 13. 结算报告 Sheet (FinalSheet) - Figma ===== -->
   <view wx:if="{{finalSheetVisible}}" class="room__sheet-overlay" bindtap="onCloseFinalSheet">
     <view class="room__sheet" catchtap>
       <view class="room__sheet-handle">
@@ -399,7 +467,7 @@
     </view>
   </view>
 
-  <!-- ===== 12. 确认弹窗 - Figma ===== -->
+  <!-- ===== 14. 确认弹窗 - Figma ===== -->
   <view wx:if="{{confirmVisible}}" class="room__confirm-overlay">
     <view class="room__confirm-dialog">
       <text class="room__confirm-icon">⚠️</text>

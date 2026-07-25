@@ -11,7 +11,9 @@
     "pages/settings/settings",
     "pages/profile-edit/profile-edit",
     "pages/help/help",
-    "pages/contact/contact"
+    "pages/contact/contact",
+    "pages/agreement/agreement",
+    "pages/privacy/privacy"
   ],
   "window": {
     "navigationBarBackgroundColor": "#F8FAFB",

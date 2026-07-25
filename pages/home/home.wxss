@@ -11,7 +11,7 @@
 /* ===== Hero ===== */
 .hero {
   background: linear-gradient(135deg, #4ECDC4 0%, #45B7D1 100%);
-  padding: 48rpx 40rpx 56rpx;
+  padding: 48rpx 48rpx 56rpx;
   border-radius: 0 0 64rpx 64rpx;
   text-align: center;
   position: relative;

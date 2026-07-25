@@ -13,9 +13,13 @@ const routes = require('./routes');
 
 const app = express();
 
-// 头像上传目录
-const UPLOAD_DIR = path.join(__dirname, 'uploads');
-if (!fs.existsSync(UPLOAD_DIR)) fs.mkdirSync(UPLOAD_DIR, { recursive: true });
+// 上传目录（从环境变量读取），按类型分子目录
+const UPLOAD_DIR = env.uploadDir;
+const UPLOAD_SUBDIRS = ['avatars'];
+UPLOAD_SUBDIRS.forEach(dir => {
+  const p = path.join(UPLOAD_DIR, dir);
+  if (!fs.existsSync(p)) fs.mkdirSync(p, { recursive: true });
+});
 
 app.use(cors({ origin: env.clientOrigin }));
 app.use(express.json());

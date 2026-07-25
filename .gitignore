@@ -5,3 +5,4 @@ cloudfunctions/
 *.log
 .env
 server/.env
+server/uploads/

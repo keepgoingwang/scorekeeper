@@ -37,11 +37,20 @@ Page({
     modeInfo: { title: '⚡ 自动结算模式', desc: '等待房主发起结算', color: '#4ECDC4' },
     skinBg: 'radial-gradient(ellipse at 40% 35%, #3D7A52, #1f4028)',
     activePlayers: [],
-    settleNet: 0
+    settleNet: 0,
+    // 手动结算弹窗
+    manualPayVisible: false,
+    manualPayees: [],
+    manualAmountVisible: false,
+    manualPayee: null,
+    manualAmount: '',
+    manualPayHint: ''
   },
 
   onLoad(options) {
-    this.setData({ roomNo: options.roomNo || '' });
+    const roomNo = options.roomNo || '';
+    this.setData({ roomNo });
+    wx.setNavigationBarTitle({ title: `房间号：${roomNo}` });
     this.loadDetail();
     this.bindSocket();
     if (options.share === '1') {
@@ -106,6 +115,7 @@ Page({
         const pos = idx >= 0 ? idx : i;
         let playerStyle = '';
         let chipX = 50, chipY = 50;
+        let playerX = 50, playerY = 50;
 
         if (room.tableShape === 'square') {
           const positions = ['top:0;left:50%;transform:translateX(-50%)', 'top:50%;left:100%;transform:translateY(-50%)', 'bottom:0;left:50%;transform:translateX(-50%)', 'top:50%;right:100%;transform:translateY(-50%)'];
@@ -114,16 +124,19 @@ Page({
           chipX = chipPos[pos % 4].x;
           chipY = chipPos[pos % 4].y;
         } else {
+          // 圆形牌桌：设计稿 ORBIT=168, CONT=336, R=108
+          // 玩家徽章在容器中的位置偏移: 166/336 ≈ 49.4%
+          // 筹码在桌面中的位置偏移: R*0.62/R = 62% 半径 → 31% 直径
           const angle = (pos / total) * 360 - 90;
           const rad = (angle * Math.PI) / 180;
-          const r = 38;
-          playerStyle = `left:${50 + r * Math.cos(rad)}%;top:${50 + r * Math.sin(rad)}%`;
-          chipX = 50 + 18 * Math.cos(rad);
-          chipY = 50 + 18 * Math.sin(rad);
+          playerX = 50 + 49.4 * Math.cos(rad);
+          playerY = 50 + 49.4 * Math.sin(rad);
+          chipX = 50 + 31 * Math.cos(rad);
+          chipY = 50 + 31 * Math.sin(rad);
         }
 
         const chipCount = m.status === 'active' ? Math.min(Math.ceil(Math.abs(m.score) / 65), 6) : 0;
-        return { ...m, playerStyle, chipX, chipY, chipCount };
+        return { ...m, playerStyle, playerX, playerY, chipX, chipY, chipCount };
       });
 
       // Compute modeInfo
@@ -197,44 +210,66 @@ Page({
     this.setData({ settleTimer: setInterval(tick, 1000) });
   },
 
-  onBack() { wx.navigateBack(); },
-
-  // ===== 手动结算 =====
+  // ===== 手动结算弹窗（Figma ManualPaySheet + AmountSheet） =====
   onPay() {
     const room = this.data.room;
     if (!room || room.mode !== 'manual') return;
     const myId = getApp().globalData.userInfo?._id;
+    // 过滤出有效收款人（不含自己、不含已退出用户）
     const payees = room.members.filter(m => m.status === 'active' && m.userId !== myId);
     if (!payees.length) return wx.showToast({ title: '没有可转账的成员', icon: 'none' });
-    wx.showActionSheet({
-      itemList: payees.map(m => `${m.nickname}（${formatScore(m.score)}）`),
-      success: (res) => this.doManualPay(payees[res.tapIndex])
+    this.setData({ manualPayees: payees, manualPayVisible: true, manualAmount: '' });
+  },
+
+  onClosePay() {
+    this.setData({ manualPayVisible: false, manualPayees: [] });
+  },
+
+  onSelectPayee(e) {
+    const idx = e.currentTarget.dataset.index;
+    const payee = this.data.manualPayees[idx];
+    if (!payee) return;
+    const payer = this.data.room.members.find(m => m.userId === getApp().globalData.userInfo?._id);
+    const currentScore = payer ? payer.score : 0;
+    this.setData({
+      manualPayVisible: false,
+      manualAmountVisible: true,
+      manualPayee: payee,
+      manualAmount: '',
+      manualPayHint: `当前可用积分：${currentScore}，积分将从你账户扣除并转给 ${payee.nickname}`
     });
   },
 
-  doManualPay(payee) {
-    const room = this.data.room;
-    const payer = room.members.find(m => m.userId === getApp().globalData.userInfo?._id);
+  onCloseAmount() {
+    this.setData({ manualAmountVisible: false, manualPayee: null, manualAmount: '' });
+  },
+
+  onAmountInput(e) {
+    const val = e.detail.value.replace(/[^0-9]/g, '').slice(0, 5);
+    this.setData({ manualAmount: val });
+  },
+
+  onQuickAmount(e) {
+    const amount = e.currentTarget.dataset.amount;
+    this.setData({ manualAmount: String(amount) });
+  },
+
+  async onConfirmPay() {
+    const payee = this.data.manualPayee;
+    const amount = parseInt(this.data.manualAmount, 10);
+    if (!payee) return;
+    if (!amount || amount <= 0) return wx.showToast({ title: '请输入有效金额', icon: 'none' });
+    const payer = this.data.room.members.find(m => m.userId === getApp().globalData.userInfo?._id);
     const currentScore = payer ? payer.score : 0;
-    wx.showModal({
-      title: '转账给 ' + payee.nickname,
-      content: `当前可用积分：${currentScore}`,
-      editable: true,
-      placeholderText: '请输入积分数量',
-      success: async (res) => {
-        if (!res.confirm) return;
-        const amount = parseInt(res.content, 10);
-        if (!amount || amount <= 0) return wx.showToast({ title: '请输入有效金额', icon: 'none' });
-        if (amount > currentScore) return wx.showToast({ title: `积分不足，当前可用积分：${currentScore}`, icon: 'none' });
-        try {
-          await roomApi.manualPay(this.data.roomNo, { toUserId: payee.userId, amount });
-          wx.showToast({ title: '转账成功', icon: 'success' });
-          this.loadDetail();
-        } catch (e) {
-          wx.showToast({ title: e.message || '转账失败', icon: 'none' });
-        }
-      }
-    });
+    if (amount > currentScore) return wx.showToast({ title: `积分不足，当前可用积分：${currentScore}`, icon: 'none' });
+    try {
+      await roomApi.manualPay(this.data.roomNo, { toUserId: payee.userId, amount });
+      wx.showToast({ title: '转账成功', icon: 'success' });
+      this.setData({ manualAmountVisible: false, manualPayee: null, manualAmount: '' });
+      this.loadDetail();
+    } catch (e) {
+      wx.showToast({ title: e.message || '转账失败', icon: 'none' });
+    }
   },
 
   // ===== 自动结算 =====

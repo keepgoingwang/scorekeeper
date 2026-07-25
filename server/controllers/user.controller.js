@@ -17,7 +17,7 @@ exports.login = async (req, res) => {
 exports.uploadAvatar = async (req, res) => {
   try {
     if (!req.file) return res.status(400).json(fail(400, '未上传文件'));
-    const url = `/uploads/${req.file.filename}`;
+    const url = `/uploads/avatars/${req.file.filename}`;
     res.json(success({ url }));
   } catch (e) {
     res.status(e.status || 500).json(fail(e.code || 500, e.message || '上传失败'));

@@ -7,56 +7,44 @@
   flex-direction: column;
   background: #F8FAFB;
   overflow: hidden;
+  position: relative;
 }
 
-/* ===== 1. 导航栏 - Figma: padding 10px 16px, white bg ===== */
-.room__navbar {
-  background: #FFFFFF;
-  padding: 20rpx 32rpx;
+/* ===== 1. 模式栏 - Figma: modeBar ===== */
+.room__mode-bar {
+  background: #F0F4F8;
+  padding: 16rpx 32rpx;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  border-bottom: 2rpx solid #E8ECEF;
+  gap: 16rpx;
+  flex-shrink: 0;
+  min-height: 80rpx;
+}
+
+.room__mode-indicator {
+  width: 8rpx;
+  height: 40rpx;
+  border-radius: 4rpx;
   flex-shrink: 0;
 }
 
-.room__back {
-  font-size: 28rpx;
-  color: #2C3E50;
-  padding: 0;
-  background: none;
-  border: none;
-  margin: 0;
-  line-height: 1;
+.room__mode-info {
+  flex: 1;
   display: flex;
-  align-items: center;
-  gap: 8rpx;
+  flex-direction: column;
+  gap: 4rpx;
 }
 
-.room__back::after { border: none; }
-
-.room__title {
-  font-size: 28rpx;
+.room__mode-title {
+  font-size: 26rpx;
   font-weight: 600;
   color: #2C3E50;
 }
 
-.room__title-value {
-  color: #4ECDC4;
-  letter-spacing: 3rpx;
-  font-weight: 800;
+.room__mode-desc {
+  font-size: 22rpx;
+  color: #7F8C8D;
 }
-
-.room__gear {
-  font-size: 36rpx;
-  background: none;
-  border: none;
-  padding: 0;
-  margin: 0;
-  line-height: 1;
-}
-
-.room__gear::after { border: none; }
 
 /* ===== 2. 头像区 - Figma: white bg, scrolling avatars + fixed invite ===== */
 .room__avatars-row {
@@ -347,21 +335,21 @@
   transform: translateY(-50%);
 }
 
-/* 圆形牌桌 - Figma: R=108, ORBIT=168, CONT=336 */
+/* 圆形牌桌 - Figma: R=108, ORBIT=168, CONT=336 (换算: 1px=1.923rpx) */
 .room__circle-table {
   position: relative;
-  width: 672rpx;
-  height: 672rpx;
+  width: 646rpx;
+  height: 646rpx;
   margin: 0 auto;
   flex-shrink: 0;
 }
 
 .room__circle-surface {
   position: absolute;
-  left: 60rpx;
-  top: 60rpx;
-  width: 552rpx;
-  height: 552rpx;
+  left: 115rpx;
+  top: 115rpx;
+  width: 415rpx;
+  height: 415rpx;
   border-radius: 50%;
   box-shadow: 0 16rpx 72rpx rgba(0,0,0,0.45), inset 0 2rpx 0 rgba(255,255,255,0.1);
   border: 8rpx solid rgba(255,255,255,0.14);
@@ -381,8 +369,8 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 132rpx;
-  height: 132rpx;
+  width: 127rpx;
+  height: 127rpx;
   border-radius: 50%;
   background: rgba(0,0,0,0.2);
   border: 2rpx solid rgba(255,255,255,0.14);
@@ -976,22 +964,22 @@
 
 .room__sheet {
   background: #FFFFFF;
-  border-radius: 40rpx 40rpx 0 0;
+  border-radius: 38rpx 38rpx 0 0;
   max-height: 80vh;
   overflow-y: auto;
   box-shadow: 0 -12rpx 64rpx rgba(0,0,0,0.14);
-  padding-bottom: 60rpx;
+  padding-bottom: 58rpx;
   width: 100%;
 }
 
 .room__sheet-handle {
   display: flex;
   justify-content: center;
-  padding: 24rpx 0 0;
+  padding: 23rpx 0 0;
 }
 
 .room__sheet-handle-bar {
-  width: 72rpx;
+  width: 69rpx;
   height: 8rpx;
   border-radius: 4rpx;
   background: #E8ECEF;
@@ -1001,29 +989,70 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 20rpx 40rpx 0;
+  padding: 19rpx 38rpx 0;
 }
 
 .room__sheet-title {
-  font-size: 32rpx;
+  flex: 1;
+  font-size: 31rpx;
   font-weight: 700;
   color: #2C3E50;
 }
 
 .room__sheet-close {
-  font-size: 44rpx;
+  font-size: 42rpx;
   color: #7F8C8D;
   background: none;
   border: none;
   padding: 0;
   margin: 0;
   line-height: 1;
+  width: 72rpx;
+  height: 72rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 }
 
 .room__sheet-close::after { border: none; }
 
 .room__sheet-body {
-  padding: 32rpx 40rpx 0;
+  padding: 31rpx 38rpx 0;
+  display: flex;
+  flex-direction: column;
+  gap: 15rpx;
+}
+
+.room__action-owner-badge {
+  font-size: 21rpx;
+  color: #4ECDC4;
+  font-weight: 700;
+  background: #E8F8F7;
+  padding: 12rpx 23rpx;
+  border-radius: 19rpx;
+}
+
+.room__action-item {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 27rpx 31rpx;
+  border-radius: 27rpx;
+  background: #F8FAFB;
+  border: 2rpx solid #E8ECEF;
+  font-size: 27rpx;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 23rpx;
+  text-align: left;
+  margin: 0;
+}
+
+.room__action-item::after { border: none; }
+
+.room__action-icon {
+  font-size: 38rpx;
 }
 
 /* 选择收款方列表 */
@@ -1048,9 +1077,14 @@
   border: 2rpx solid #E8ECEF;
 }
 
+.room__pay-item:active {
+  background: #E8F8F7;
+  border-color: #4ECDC4;
+}
+
 .room__pay-avatar {
-  width: 92rpx;
-  height: 92rpx;
+  width: 88rpx;
+  height: 88rpx;
   border-radius: 50%;
   background: #E8F8F7;
   border: 4rpx solid #4ECDC4;
@@ -1059,6 +1093,12 @@
   justify-content: center;
   font-size: 48rpx;
   flex-shrink: 0;
+  overflow: hidden;
+}
+
+.room__pay-avatar-img {
+  width: 100%;
+  height: 100%;
 }
 
 .room__pay-info {
@@ -1128,41 +1168,28 @@
 
 .room__amount-btn::after { border: none; }
 
-/* 操作菜单 */
-.room__action-list {
-  display: flex;
-  flex-direction: column;
-  gap: 16rpx;
-}
-
-.room__action-owner-badge {
-  font-size: 22rpx;
-  color: #4ECDC4;
-  font-weight: 700;
-  background: #E8F8F7;
-  padding: 12rpx 24rpx;
-  border-radius: 20rpx;
-}
-
-.room__action-item {
+/* 确认转账按钮 - Figma: 红色渐变 */
+.room__amount-confirm {
   width: 100%;
-  padding: 28rpx 32rpx;
-  border-radius: 28rpx;
-  background: #F8FAFB;
-  border: 2rpx solid #E8ECEF;
-  font-size: 28rpx;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  gap: 24rpx;
-  text-align: left;
+  padding: 29rpx;
+  border-radius: 42rpx;
+  font-size: 29rpx;
+  font-weight: 700;
+  border: none;
   margin: 0;
 }
 
-.room__action-item::after { border: none; }
+.room__amount-confirm::after { border: none; }
 
-.room__action-icon {
-  font-size: 40rpx;
+.room__amount-confirm--active {
+  background: linear-gradient(135deg, #FF6B6B 0%, #FF9F45 100%);
+  color: #fff;
+  box-shadow: 0 8rpx 32rpx rgba(255,107,107,0.4);
+}
+
+.room__amount-confirm[disabled] {
+  background: #E8ECEF;
+  color: #7F8C8D;
 }
 
 /* 结算报告 */
