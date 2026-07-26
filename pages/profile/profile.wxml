@@ -1,7 +1,7 @@
 <!--pages/profile/profile.wxml - 我的页面 - 完全照搬Figma设计-->
 <view class="profile">
   <!-- 头部渐变 -->
-  <view class="profile__header">
+  <view class="profile__header" style="padding-top: {{headerPaddingTop}}px;">
     <text class="profile__header-title">我的</text>
   </view>
 

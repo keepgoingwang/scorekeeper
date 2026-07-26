@@ -8,7 +8,7 @@
 /* 头部渐变 */
 .profile__header {
   background: var(--mint-grad);
-  padding: 56rpx 40rpx 112rpx;
+  padding: 20rpx 40rpx 64rpx;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -24,7 +24,9 @@
 /* 用户卡片 - 浮动在头部下方 */
 .profile__card-wrap {
   padding: 0 32rpx;
-  margin-top: -80rpx;
+  margin-top: -40rpx;
+  position: relative;
+  z-index: 2;
 }
 
 .profile__card {

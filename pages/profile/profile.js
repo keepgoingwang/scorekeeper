@@ -8,7 +8,16 @@ Page({
     userInfo: null,
     avatarUrl: '',
     stats: null,
-    loading: false
+    loading: false,
+    headerPaddingTop: 0
+  },
+
+  onLoad() {
+    const sysInfo = wx.getWindowInfo();
+    const menuBtn = wx.getMenuButtonBoundingClientRect();
+    const statusBarHeight = sysInfo.statusBarHeight || 20;
+    const navBarHeight = (menuBtn.bottom - menuBtn.top) + (menuBtn.top - statusBarHeight) * 2;
+    this.setData({ headerPaddingTop: statusBarHeight + navBarHeight });
   },
 
   onShow() {

@@ -6,3 +6,6 @@ cloudfunctions/
 .env
 server/.env
 server/uploads/
+
+# 含 GitHub PAT/密钥，禁止提交
+auser_files/github_config.md

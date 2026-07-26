@@ -212,7 +212,7 @@
     <view class="room__qr-panel" catchtap>
       <view class="room__qr-header">
         <text class="room__qr-title">🎉 邀请好友加入</text>
-        <button class="room__qr-close" bindtap="onCloseShare">✕</button>
+        <view class="room__qr-close" bindtap="onCloseShare">✕</view>
       </view>
       <view class="room__qr-body">
         <view class="room__qr-code">
@@ -298,7 +298,7 @@
       </view>
       <view class="room__sheet-header">
         <text class="room__sheet-title">💸 选择收款方</text>
-        <button class="room__sheet-close" bindtap="onClosePay">✕</button>
+        <view class="room__sheet-close" bindtap="onClosePay">✕</view>
       </view>
       <view class="room__sheet-body">
         <text class="room__pay-hint">选择收款玩家（仅显示房间内有效用户）</text>
@@ -334,7 +334,7 @@
       </view>
       <view class="room__sheet-header">
         <text class="room__sheet-title">💸 支付给 {{manualPayee.nickname}}</text>
-        <button class="room__sheet-close" bindtap="onCloseAmount">✕</button>
+        <view class="room__sheet-close" bindtap="onCloseAmount">✕</view>
       </view>
       <view class="room__sheet-body">
         <text class="room__amount-hint">{{manualPayHint}}</text>
@@ -369,35 +369,35 @@
       </view>
       <view class="room__sheet-header">
         <text class="room__sheet-title">⚙️ 操作菜单</text>
-        <button class="room__sheet-close" bindtap="onCloseActionSheet">✕</button>
+        <view class="room__sheet-close" bindtap="onCloseActionSheet">✕</view>
       </view>
       <view class="room__sheet-body">
         <text wx:if="{{room.isOwner}}" class="room__action-owner-badge">👑 你是房主，拥有额外权限</text>
-        <button class="room__action-item" style="color:#2C3E50" bindtap="onViewFlow">
+        <view class="room__action-item" hover-class="room__action-item--hover" style="color:#2C3E50" bindtap="onViewFlow">
           <text class="room__action-icon">📋</text>
           <text>查看流水单</text>
-        </button>
-        <button class="room__action-item" style="color:#FF9F45" bindtap="onExitRoom">
+        </view>
+        <view class="room__action-item" hover-class="room__action-item--hover" style="color:#FF9F45" bindtap="onExitRoom">
           <text class="room__action-icon">🚪</text>
           <text>退出房间</text>
-        </button>
+        </view>
         <block wx:if="{{room.isOwner}}">
-          <button class="room__action-item" style="color:#2C3E50" bindtap="onSwitchMode">
+          <view class="room__action-item" hover-class="room__action-item--hover" style="color:#2C3E50" bindtap="onSwitchMode">
             <text class="room__action-icon">⚙️</text>
             <text>切换结算模式</text>
-          </button>
-          <button class="room__action-item" style="color:#2C3E50" bindtap="onOpenSettings">
+          </view>
+          <view class="room__action-item" hover-class="room__action-item--hover" style="color:#2C3E50" bindtap="onOpenSettings">
             <text class="room__action-icon">🎨</text>
             <text>牌桌皮肤设置</text>
-          </button>
-          <button class="room__action-item" style="color:#4ECDC4" bindtap="onSettleFinal">
+          </view>
+          <view class="room__action-item" hover-class="room__action-item--hover" style="color:#4ECDC4" bindtap="onSettleFinal">
             <text class="room__action-icon">🏁</text>
             <text>房间结算（终局）</text>
-          </button>
-          <button class="room__action-item" style="color:#FF6B6B" bindtap="onDissolveRoom">
+          </view>
+          <view class="room__action-item" hover-class="room__action-item--hover" style="color:#FF6B6B" bindtap="onDissolveRoom">
             <text class="room__action-icon">💥</text>
             <text>解散房间</text>
-          </button>
+          </view>
         </block>
       </view>
     </view>
@@ -411,7 +411,7 @@
       </view>
       <view class="room__sheet-header">
         <text class="room__sheet-title">🎨 牌桌皮肤</text>
-        <button class="room__sheet-close" bindtap="onCloseSkinSheet">×</button>
+        <view class="room__sheet-close" bindtap="onCloseSkinSheet">×</view>
       </view>
       <view class="room__sheet-body">
         <view class="room__skin-grid">
@@ -446,7 +446,7 @@
       </view>
       <view class="room__sheet-header">
         <text class="room__sheet-title">🏆 房间结算报告</text>
-        <button class="room__sheet-close" bindtap="onCloseFinalSheet">×</button>
+        <view class="room__sheet-close" bindtap="onCloseFinalSheet">×</view>
       </view>
       <view class="room__sheet-body">
         <text style="font-size:22rpx;color:#7F8C8D;display:block;margin-bottom:20rpx;">房间 {{roomNo}} · 共 {{room.round || 12}} 局 · 仅统计有效用户</text>

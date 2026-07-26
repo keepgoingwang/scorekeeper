@@ -1,9 +1,9 @@
 // utils/constants.util.js
 // 领域常量：牌桌皮肤、房间状态、结算模式、角色、错误码
 
-/** 接口基础地址（本地联调；上线前改为线上 HTTPS 域名，并在小程序后台配置合法域名） */
-export const API_BASE = 'http://localhost:3000';
-export const WS_BASE = 'ws://localhost:3000/ws';
+/** 接口基础地址（本地联调用 localhost，线上改为 HTTPS 域名） */
+export const API_BASE = 'https://ocrcamera.xyz';
+export const WS_BASE = 'wss://ocrcamera.xyz/ws';
 
 /** 静态资源 origin（头像等后端返回相对路径时拼接） */
 export const ASSET_ORIGIN = API_BASE;
