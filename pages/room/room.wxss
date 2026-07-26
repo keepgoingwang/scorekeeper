@@ -58,7 +58,6 @@
 
 .room__avatars-scroll {
   flex: 1;
-  display: flex;
   overflow-x: auto;
   padding-left: 16rpx;
   white-space: nowrap;
@@ -68,9 +67,13 @@
   display: inline-flex;
   flex-direction: column;
   align-items: center;
-  padding: 18rpx 20rpx;
+  justify-content: center;
+  width: 132rpx;
+  padding: 18rpx 0;
   gap: 4rpx;
   flex-shrink: 0;
+  vertical-align: top;
+  box-sizing: border-box;
   border-right: 2rpx solid #E8ECEF;
   opacity: 1;
   transition: opacity 0.2s;
@@ -137,10 +140,15 @@
 }
 
 .avatar-cell__name {
+  display: block;
+  width: 100%;
   font-size: 20rpx;
   font-weight: 600;
   color: #2C3E50;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: center;
 }
 
 .avatar-cell.is-exited .avatar-cell__name {
@@ -148,8 +156,11 @@
 }
 
 .avatar-cell__score {
+  display: block;
+  width: 100%;
   font-size: 24rpx;
   font-weight: 800;
+  text-align: center;
 }
 
 /* 邀请按钮 - Figma: 66px wide, fixed right */
@@ -164,9 +175,11 @@
   align-items: center;
   justify-content: center;
   gap: 6rpx;
-  padding: 16rpx 20rpx;
+  padding: 16rpx 0;
   margin: 0;
+  box-sizing: border-box;
 }
+.room__invite-btn--hover { background: #D8F0EE; }
 
 .room__invite-btn::after { border: none; }
 
@@ -1474,3 +1487,33 @@
   background: #FF6B6B;
   box-shadow: 0 6rpx 20rpx rgba(255,107,107,0.4);
 }
+/* 模式栏右侧：房主标识 + 切换模式（仅房主） */
+.room__mode-actions {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  flex-shrink: 0;
+  margin-left: 16rpx;
+}
+.room__mode-owner-tag {
+  font-size: 22rpx;
+  font-weight: 700;
+  color: #B8860B;
+  background: #FFF9E6;
+  border: 2rpx solid #FFD93D;
+  border-radius: 16rpx;
+  padding: 8rpx 16rpx;
+  white-space: nowrap;
+}
+.room__mode-switch-btn {
+  font-size: 22rpx;
+  font-weight: 700;
+  color: #4ECDC4;
+  background: #FFFFFF;
+  border: 2rpx solid #4ECDC4;
+  border-radius: 16rpx;
+  padding: 8rpx 16rpx;
+  white-space: nowrap;
+  box-sizing: border-box;
+}
+.room__mode-switch-btn--hover { background: #E8F8F7; }

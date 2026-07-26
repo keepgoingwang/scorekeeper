@@ -18,15 +18,15 @@
           <view wx:if="{{item.status === 'exited'}}" class="avatar-cell__exited-overlay">🚪</view>
         </view>
         <text class="avatar-cell__name">{{item.nickname}}{{item.status === 'exited' ? '(退)' : ''}}</text>
-        <text class="avatar-cell__score {{item.score > 0 ? 'text-success' : item.score < 0 ? 'text-danger' : 'text-muted'}}">
+        <text class="avatar-cell__score {{item.status === 'exited' ? 'text-muted' : (item.score > 0 ? 'text-success' : item.score < 0 ? 'text-danger' : 'text-muted')}}">
           {{item.score > 0 ? '+' : ''}}{{item.score}}
         </text>
       </view>
     </scroll-view>
-    <button class="room__invite-btn" bindtap="onInvite">
+    <view class="room__invite-btn" hover-class="room__invite-btn--hover" bindtap="onInvite">
       <view class="room__invite-icon">➕</view>
       <text class="room__invite-label">邀请好友</text>
-    </button>
+    </view>
   </view>
 
   <!-- ===== 3. 模式栏 - Figma: modeBar ===== -->
@@ -35,6 +35,10 @@
     <view class="room__mode-info">
       <text class="room__mode-title">{{modeInfo.title}}</text>
       <text class="room__mode-desc">{{modeInfo.desc}}</text>
+    </view>
+    <view wx:if="{{room.isOwner}}" class="room__mode-actions">
+      <view class="room__mode-owner-tag">👑房主</view>
+      <view class="room__mode-switch-btn" hover-class="room__mode-switch-btn--hover" bindtap="onSwitchMode">切换模式</view>
     </view>
   </view>
 
