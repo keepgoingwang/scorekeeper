@@ -1,29 +1,23 @@
-<!--pages/login/login.wxml - 简化版登录页 -->
+<!--pages/login/login.wxml - 沉浸式一键登录（零授权弹窗）-->
 <view class="login">
-  <view class="login__header">
-    <view class="login__logo-wrap">
-      <text class="login__logo">🀄</text>
-    </view>
+  <!-- 品牌 hero -->
+  <view class="login__hero" style="padding-top: {{headerPaddingTop}}px;">
+    <view class="login__hero-circle login__hero-circle--1"></view>
+    <view class="login__hero-circle login__hero-circle--2"></view>
+    <view class="login__logo">🀄</view>
     <text class="login__title">牌桌记分</text>
     <text class="login__desc">打牌计分，一键搞定</text>
   </view>
 
-  <view class="login__card">
-    <!-- 头像选择 -->
-    <button class="login__avatar-btn" open-type="chooseAvatar" bindchooseavatar="onChooseAvatar">
-      <image wx:if="{{avatar}}" class="login__avatar-img" src="{{avatar}}" mode="aspectFill" />
-      <text wx:else class="login__avatar-placeholder">🤠</text>
-    </button>
-
-    <!-- 昵称输入（type="nickname" 自动填充微信昵称） -->
-    <input class="login__nickname" type="nickname" placeholder="你的微信昵称" bindinput="onNicknameInput" />
-
-    <!-- 登录按钮 -->
+  <!-- 登录面板（浮在 hero 下沿） -->
+  <view class="login__panel">
     <button class="login__btn" bindtap="onLogin" loading="{{loading}}">
-      <text class="login__btn-text">微信登录</text>
+      <text class="login__btn-text">微信一键登录</text>
     </button>
+    <text class="login__tip">首次登录使用默认头像与昵称，可在「我的」修改</text>
   </view>
 
+  <!-- 协议 -->
   <view class="login__footer">
     <text class="login__hint">
       登录即代表同意

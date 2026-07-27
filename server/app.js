@@ -24,6 +24,9 @@ UPLOAD_SUBDIRS.forEach(dir => {
 app.use(cors({ origin: env.clientOrigin }));
 app.use(express.json());
 app.use('/uploads', express.static(UPLOAD_DIR));
+// 兼容历史头像 URL：升级 avatars 子目录前，user.avatar 存的是 /uploads/<file>（无子目录）。
+// express.static 找不到文件会 next()，故同前缀再挂一次 avatars 目录兜底，使新旧 URL 均可命中。
+app.use('/uploads', express.static(path.join(UPLOAD_DIR, 'avatars')));
 
 // 业务路由
 app.use('/api', routes);

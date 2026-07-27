@@ -1,38 +1,29 @@
 // pages/login/login.js
-// 微信登录：选择头像 + 自动填入昵称 → 点击登录
+// 微信一键登录：点按钮 → wx.login → 换 token → 进首页，零授权弹窗。
+// 首次登录使用默认头像与昵称（后端缺省填充），真实资料可在「我的-编辑资料」修改。
 import { userApi } from '../../services/user.service';
-import { API_BASE } from '../../utils/constants.util';
 
 Page({
   data: {
-    avatar: '',
-    nickname: '',
-    loading: false
+    loading: false,
+    headerPaddingTop: 0
   },
 
-  onChooseAvatar(e) {
-    this.setData({ avatar: e.detail.avatarUrl || '' });
+  onLoad() {
+    const sysInfo = wx.getWindowInfo();
+    const menuBtn = wx.getMenuButtonBoundingClientRect();
+    const statusBarHeight = sysInfo.statusBarHeight || 20;
+    const navBarHeight = (menuBtn.bottom - menuBtn.top) + (menuBtn.top - statusBarHeight) * 2;
+    this.setData({ headerPaddingTop: statusBarHeight + navBarHeight });
   },
 
-  onNicknameInput(e) {
-    const val = e.detail.value || '';
-    if (val) this.setData({ nickname: val });
-  },
-
+  /** 一键登录：直接拿 code 换 token，不弹任何授权 */
   async onLogin() {
     if (this.data.loading) return;
-    const nickname = this.data.nickname.trim();
-    if (!nickname) {
-      return wx.showToast({ title: '请点击昵称输入框', icon: 'none' });
-    }
     this.setData({ loading: true });
     try {
-      let avatarUrl = '';
-      if (this.data.avatar) {
-        avatarUrl = await this.uploadAvatar(this.data.avatar);
-      }
       const { code } = await wx.login();
-      const res = await userApi.login(code, { nickname, avatar: avatarUrl });
+      const res = await userApi.login(code, {});
 
       const app = getApp();
       app.globalData.token = res.data.token;
@@ -46,26 +37,6 @@ Page({
     } finally {
       this.setData({ loading: false });
     }
-  },
-
-  uploadAvatar(filePath) {
-    return new Promise((resolve, reject) => {
-      wx.uploadFile({
-        url: API_BASE + '/api/user/avatar',
-        filePath,
-        name: 'avatar',
-        success: (res) => {
-          try {
-            const data = JSON.parse(res.data);
-            if (data.code === 200) resolve(data.data.url);
-            else reject(new Error(data.message || '头像上传失败'));
-          } catch (err) {
-            reject(new Error('头像上传失败'));
-          }
-        },
-        fail: () => reject(new Error('头像上传失败'))
-      });
-    });
   },
 
   onOpenPage(e) {
