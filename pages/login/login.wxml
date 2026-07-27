@@ -15,8 +15,8 @@
       <text class="login__btn-text">微信一键登录</text>
     </button>
 
-    <!-- 隐藏的昵称输入框，用于自动获取微信昵称 -->
-    <input class="login__nickname-hidden" type="nickname" bindinput="onNicknameInput" />
+    <!-- 昵称输入框：头像选择后自动聚焦，点微信建议即可填入 -->
+    <input wx:if="{{showNickname}}" class="login__nickname" type="nickname" placeholder="你的微信昵称" bindinput="onNicknameInput" bindconfirm="onNicknameConfirm" focus="{{autoFocus}}" />
   </view>
 
   <view class="login__footer">

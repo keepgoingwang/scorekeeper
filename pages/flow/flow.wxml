@@ -1,8 +1,6 @@
 <!--pages/flow/flow.wxml - 流水记录 - 完全照搬Figma设计-->
 <view class="flow">
   <view class="flow__header">
-    <button class="flow__back" bindtap="onBack">← 返回</button>
-    <text class="flow__header-title">📋 流水记录</text>
     <text class="flow__header-room">房间 {{roomNo}}</text>
   </view>
 
@@ -10,15 +8,15 @@
   <view class="flow__summary">
     <view class="flow__summary-item">
       <text class="flow__summary-label">总支出</text>
-      <text class="flow__summary-value" style="color:#FF6B6B;">-430分</text>
+      <text class="flow__summary-value" style="color:#FF6B6B;">{{summary.expenseText}}</text>
     </view>
     <view class="flow__summary-item">
       <text class="flow__summary-label">总收入</text>
-      <text class="flow__summary-value" style="color:#6BCB77;">+350分</text>
+      <text class="flow__summary-value" style="color:#6BCB77;">{{summary.incomeText}}</text>
     </view>
     <view class="flow__summary-item">
       <text class="flow__summary-label">共</text>
-      <text class="flow__summary-value" style="color:var(--text-sub);">12 局</text>
+      <text class="flow__summary-value" style="color:var(--text-sub);">{{summary.roundsText}}</text>
     </view>
   </view>
 

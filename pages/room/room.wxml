@@ -57,7 +57,6 @@
           <!-- 中心徽章 -->
           <view class="room__square-center">
             <text class="room__square-center-icon">🀄</text>
-            <text class="room__square-center-round">第 {{room.round || 12}} 局</text>
           </view>
           <!-- 筹码（4个位置） -->
           <view wx:for="{{room.members}}" wx:key="userId" wx:if="{{item.status === 'active' && item.score !== 0}}"
@@ -98,7 +97,6 @@
           <view class="room__circle-felt"></view>
           <view class="room__circle-center">
             <text class="room__circle-center-icon">🀄</text>
-            <text class="room__circle-center-round">第 {{room.round || 8}} 局</text>
           </view>
           <!-- 筹码 -->
           <view wx:for="{{room.members}}" wx:key="userId" wx:if="{{item.status === 'active' && item.score !== 0}}"
@@ -152,7 +150,7 @@
     <block wx:if="{{room.mode === 'auto'}}">
       <button wx:if="{{room.isOwner}}" class="room__bottom-btn room__bottom-btn--primary" bindtap="onStartSettle">
         <text class="room__bottom-btn-icon">🎲</text>
-        <text class="room__bottom-btn-label">发起第 {{room.round || 12}} 局结算</text>
+        <text class="room__bottom-btn-label">发起本局结算</text>
       </button>
       <button class="room__bottom-btn room__bottom-btn--secondary" bindtap="onAction">
         <text class="room__bottom-btn-icon">⚙️</text>
@@ -197,7 +195,7 @@
     <view class="room__settle-panel" catchtap>
       <view class="room__settle-header">
         <view class="room__settle-header-left">
-          <text class="room__settle-title">第 {{room.round || 12}} 局结算</text>
+          <text class="room__settle-title">本局结算</text>
           <text class="room__settle-subtitle">请输入本局收入或支出，不进不出可不填</text>
         </view>
         <button class="room__settle-close" bindtap="onCloseSettleModal">✕</button>

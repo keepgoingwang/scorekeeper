@@ -9,35 +9,18 @@
 
 .flow__header {
   background: var(--mint-grad);
-  padding: 28rpx 32rpx;
+  padding: 24rpx 32rpx;
   display: flex;
   align-items: center;
-  gap: 24rpx;
+  justify-content: center;
   flex-shrink: 0;
 }
 
-.flow__back {
-  font-size: 28rpx;
-  color: #fff;
-  padding: 0;
-  background: none;
-  border: none;
-  margin: 0;
-  line-height: 1;
-}
-
-.flow__back::after { border: none; }
-
-.flow__header-title {
-  flex: 1;
-  font-size: 32rpx;
-  font-weight: 800;
-  color: #fff;
-}
-
 .flow__header-room {
-  font-size: 24rpx;
-  color: rgba(255,255,255,0.8);
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 2rpx;
 }
 
 /* 汇总栏 */

@@ -250,15 +250,24 @@ async function getFlow(roomNo, params = {}) {
   const room = await Room.findOne({ roomNo, isDeleted: false });
   if (!room) throw new BizError('房间不存在或已解散', 404, 404);
   const { page = 1, pageSize = 50 } = params;
-  const [list, total] = await Promise.all([
+  const [list, total, allFlows] = await Promise.all([
     Flow.find({ roomId: room._id, isDeleted: false })
       .sort({ _id: -1 })
       .skip((page - 1) * pageSize)
       .limit(pageSize)
       .lean(),
-    Flow.countDocuments({ roomId: room._id, isDeleted: false })
+    Flow.countDocuments({ roomId: room._id, isDeleted: false }),
+    Flow.find({ roomId: room._id, isDeleted: false }).select('type amount').lean()
   ]);
-  return { list, total, page, pageSize };
+  // 真实汇总：pay 转账额与 settle 正额计入收入，settle 负额计入支出（房间级流水规模）
+  let totalIncome = 0;
+  let totalExpense = 0;
+  for (const f of allFlows) {
+    const signed = f.type === 'settle' ? (f.amount || 0) : (f.type === 'pay' ? (f.amount || 0) : 0);
+    if (signed > 0) totalIncome += signed;
+    else if (signed < 0) totalExpense += -signed;
+  }
+  return { list, total, page, pageSize, summary: { totalIncome, totalExpense, rounds: room.round || 0 } };
 }
 
 // ---- 内部辅助 ----
