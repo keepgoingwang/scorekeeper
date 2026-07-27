@@ -11,16 +11,16 @@
 
   <!-- Action Buttons -->
   <view class="actions">
-    <button class="actions__create" bindtap="onCreateRoom">
+    <view class="actions__create" hover-class="actions__create--hover" bindtap="onCreateRoom">
       <text class="actions__create-icon">🎲</text>
       <text class="actions__create-text">创建房间</text>
       <text class="actions__create-desc">点击快速开启牌局</text>
-    </button>
-    <button class="actions__join" bindtap="onJoinRoom">
+    </view>
+    <view class="actions__join" hover-class="actions__join--hover" bindtap="onJoinRoom">
       <text class="actions__join-icon">📷</text>
       <text class="actions__join-text">加入房间</text>
       <text class="actions__join-desc">扫码或输入房间号加入</text>
-    </button>
+    </view>
   </view>
 
   <!-- Current room card -->

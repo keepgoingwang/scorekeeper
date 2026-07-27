@@ -68,50 +68,54 @@
   padding: 32rpx 38rpx 0;
   display: flex;
   flex-direction: column;
-  gap: 16rpx;
+  gap: 28rpx;
   width: 100%;
   box-sizing: border-box;
 }
 
 .actions__create {
   width: 100%;
-  padding: 28rpx 0;
-  border-radius: 32rpx;
+  padding: 68rpx 0;
+  border-radius: 44rpx;
   background: linear-gradient(135deg, #4ECDC4 0%, #45B7D1 100%);
   border: none;
-  box-shadow: 0 8rpx 32rpx rgba(78,205,196,0.4);
-  display: block;
-  text-align: center;
-  margin: 0;
+  box-shadow: 0 12rpx 40rpx rgba(78,205,196,0.35), 0 0 0 8rpx rgba(78,205,196,0.08);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20rpx;
   box-sizing: border-box;
 }
+.actions__create--hover { opacity: 0.92; }
 
 .actions__create::after { border: none; }
 .actions__create:active { opacity: 0.9; }
 
-.actions__create-icon { font-size: 48rpx; display: block; margin-bottom: 8rpx; }
-.actions__create-text { font-size: 28rpx; font-weight: 900; color: #fff; display: block; margin-bottom: 8rpx; }
-.actions__create-desc { font-size: 20rpx; color: rgba(255,255,255,0.85); display: block; }
+.actions__create-icon { font-size: 76rpx; display: block; line-height: 1; }
+.actions__create-text { font-size: 38rpx; font-weight: 900; color: #fff; display: block; }
+.actions__create-desc { font-size: 26rpx; color: rgba(255,255,255,0.88); display: block; }
 
 .actions__join {
   width: 100%;
-  padding: 28rpx 0;
-  border-radius: 32rpx;
+  padding: 68rpx 0;
+  border-radius: 44rpx;
   background: #FFFFFF;
   border: 3rpx solid #4ECDC4;
   box-shadow: 0 4rpx 16rpx rgba(78,205,196,0.15);
-  display: block;
-  text-align: center;
-  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20rpx;
   box-sizing: border-box;
 }
+.actions__join--hover { background: #F4FCFB; }
 
 .actions__join::after { border: none; }
 .actions__join:active { opacity: 0.9; }
 
-.actions__join-icon { font-size: 48rpx; display: block; margin-bottom: 8rpx; }
-.actions__join-text { font-size: 28rpx; font-weight: 900; color: #4ECDC4; display: block; margin-bottom: 8rpx; }
-.actions__join-desc { font-size: 20rpx; color: #7F8C8D; display: block; }
+.actions__join-icon { font-size: 76rpx; display: block; line-height: 1; }
+.actions__join-text { font-size: 38rpx; font-weight: 900; color: #4ECDC4; display: block; }
+.actions__join-desc { font-size: 26rpx; color: #7F8C8D; display: block; }
 
 /* ===== Current room card ===== */
 .room-card-wrap { padding: 24rpx 40rpx 0; }
