@@ -30,13 +30,8 @@ async function login(code, profile = {}) {
       nickname: profile.nickname || '牌友' + Math.floor(Math.random() * 1000),
       avatar: profile.avatar || ''
     });
-  } else if (profile.nickname || profile.avatar) {
-    // 已有用户：用本次提交的微信资料更新
-    const set = {};
-    if (profile.nickname) set.nickname = profile.nickname;
-    if (profile.avatar) set.avatar = profile.avatar;
-    user = await User.findByIdAndUpdate(user._id, { $set: set }, { new: true });
   }
+  // 已有用户：不更新昵称和头像，保留用户自行编辑的信息
   const token = signToken({ _id: user._id.toString(), role: user.role });
   return { token, user: toProfile(user) };
 }

@@ -77,14 +77,24 @@
 
 .login__btn-text { font-size: 30rpx; }
 
-/* 隐藏的昵称输入框（用于触发微信昵称自动填充） */
-.login__nickname-hidden {
-  position: absolute;
-  left: -9999rpx;
-  width: 1rpx;
-  height: 1rpx;
-  opacity: 0;
-  overflow: hidden;
+/* 昵称输入框 - 头像选择后显示，点微信建议即填入 */
+.login__nickname {
+  width: 100%;
+  margin-top: 36rpx;
+  padding: 30rpx 28rpx;
+  background: #F8FAFB;
+  border-radius: 24rpx;
+  font-size: 28rpx;
+  font-weight: 600;
+  box-sizing: border-box;
+  border: 3rpx solid #E8ECEF;
+  color: #2C3E50;
+  text-align: center;
+  transition: border-color 0.2s;
+}
+
+.login__nickname:focus {
+  border-color: #4ECDC4;
 }
 
 .login__footer {

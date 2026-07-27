@@ -1,5 +1,5 @@
 // pages/login/login.js
-// 简化版微信登录：点击按钮 → chooseAvatar + 自动获取昵称 → 上传头像 → wx.login → 登录
+// 简化版微信登录：点击按钮 → chooseAvatar → 微信昵称建议 → 自动登录
 import { userApi } from '../../services/user.service';
 import { API_BASE } from '../../utils/constants.util';
 
@@ -7,23 +7,36 @@ Page({
   data: {
     avatar: '',
     nickname: '',
-    loading: false
+    loading: false,
+    showNickname: false,
+    autoFocus: false
   },
 
-  /** 选择微信头像（自动触发登录） */
+  /** 选择微信头像后，显示昵称输入框让用户点一下微信建议 */
   onChooseAvatar(e) {
     const avatar = e.detail.avatarUrl || '';
-    this.setData({ avatar });
-    // 头像选择后自动执行登录
-    this.doLogin();
+    this.setData({
+      avatar,
+      showNickname: true,
+      autoFocus: true
+    });
   },
 
-  /** 昵称自动填入（来自隐藏的 type="nickname" 输入框） */
+  /** 昵称自动填入（来自微信键盘建议） */
   onNicknameInput(e) {
     const nickname = e.detail.value || '';
     if (nickname) {
       this.setData({ nickname });
     }
+  },
+
+  /** 用户点击微信键盘的"确认"或昵称建议后，自动登录 */
+  onNicknameConfirm(e) {
+    const nickname = e.detail.value || '';
+    if (nickname) {
+      this.setData({ nickname });
+    }
+    this.doLogin();
   },
 
   /** 执行登录：上传头像 → wx.login → 调后端登录接口 */
@@ -40,7 +53,7 @@ Page({
       // 2. wx.login 获取 code
       const { code } = await wx.login();
 
-      // 3. 调后端登录接口，传入头像 URL 和昵称
+      // 3. 调后端登录接口
       const res = await userApi.login(code, {
         nickname: this.data.nickname || '牌友',
         avatar: avatarUrl
