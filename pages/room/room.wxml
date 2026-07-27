@@ -64,10 +64,10 @@
             style="position:absolute;left:{{item.chipX}}%;top:{{item.chipY}}%;transform:translate(-50%,-50%)">
             <view class="room__chip-pile">
               <text class="room__chip-score" style="color:{{item.score > 0 ? '#FFE566' : '#FFB3B3'}}">{{item.score > 0 ? '+' : ''}}{{item.score}}</text>
-              <view class="room__chip-stack" style="height:{{44 + (chipCount(item.score) - 1) * 8}}rpx">
+              <view class="room__chip-stack" style="height:{{52 + (chipCount(item.score) - 1) * 10}}rpx">
                 <view wx:for="{{chipCount(item.score)}}" wx:key="*this"
                   class="room__chip-item"
-                  style="bottom:{{index * 8}}rpx;background:{{chipColor(item.score, index === chipCount(item.score) - 1)}};box-shadow:0 {{chipCount(item.score) - index + 1}}rpx {{(chipCount(item.score) - index) * 4 + 4}}rpx rgba(0,0,0,0.42)">
+                  style="bottom:{{index * 10}}rpx;background:{{chipColor(item.score, index === chipCount(item.score) - 1)}}">
                   <view wx:if="{{index === chipCount(item.score) - 1}}" class="room__chip-inner"></view>
                 </view>
               </view>
@@ -75,58 +75,18 @@
           </view>
         </view>
         <!-- 玩家位置（4个方向） -->
-        <view wx:for="{{activePlayers}}" wx:key="userId" wx:for-index="i">
-          <view wx:if="{{i === 0}}" class="room__player-pos room__player-pos--top">
-            <view class="room__badge">
-              <view class="room__badge-avatar {{item.isOwner ? 'room__badge-avatar--owner' : ''}} {{item.status === 'exited' ? 'room__badge-avatar--exited' : ''}}">
-                <image wx:if="{{item.avatar}}" class="room__badge-avatar-img" src="{{item.avatar}}" mode="aspectFill" />
-                <text wx:else style="font-size:40rpx">{{item.nickname ? item.nickname[0] : '?'}}</text>
-                <text wx:if="{{item.isOwner && item.status !== 'exited'}}" class="room__badge-crown">👑</text>
-                <text wx:if="{{item.submitted && item.status !== 'exited'}}" class="room__badge-submitted"></text>
-                <view wx:if="{{item.status === 'exited'}}" class="room__badge-exited-overlay">🚪</view>
-              </view>
-              <text class="room__badge-name">{{item.nickname}}</text>
-              <text class="room__badge-score {{item.score > 0 ? 'text-success' : item.score < 0 ? 'text-danger' : ''}}">{{item.score > 0 ? '+' : ''}}{{item.score}}</text>
+        <view wx:for="{{room.members}}" wx:key="userId"
+          class="room__player-pos" style="{{item.playerStyle}}">
+          <view class="room__badge {{item.status === 'exited' ? 'room__badge--exited' : ''}}">
+            <view class="room__badge-avatar {{item.isOwner ? 'room__badge-avatar--owner' : ''}} {{item.status === 'exited' ? 'room__badge-avatar--exited' : ''}}">
+              <image wx:if="{{item.avatar}}" class="room__badge-avatar-img" src="{{item.avatar}}" mode="aspectFill" />
+              <text wx:else style="font-size:40rpx">{{item.nickname ? item.nickname[0] : '?'}}</text>
+              <text wx:if="{{item.isOwner && item.status !== 'exited'}}" class="room__badge-crown">👑</text>
+              <text wx:if="{{item.submitted && item.status !== 'exited'}}" class="room__badge-submitted"></text>
+              <view wx:if="{{item.status === 'exited'}}" class="room__badge-exited-overlay">🚪</view>
             </view>
-          </view>
-          <view wx:elif="{{i === 1}}" class="room__player-pos room__player-pos--right">
-            <view class="room__badge">
-              <view class="room__badge-avatar {{item.isOwner ? 'room__badge-avatar--owner' : ''}} {{item.status === 'exited' ? 'room__badge-avatar--exited' : ''}}">
-                <image wx:if="{{item.avatar}}" class="room__badge-avatar-img" src="{{item.avatar}}" mode="aspectFill" />
-                <text wx:else style="font-size:40rpx">{{item.nickname ? item.nickname[0] : '?'}}</text>
-                <text wx:if="{{item.isOwner && item.status !== 'exited'}}" class="room__badge-crown">👑</text>
-                <text wx:if="{{item.submitted && item.status !== 'exited'}}" class="room__badge-submitted"></text>
-                <view wx:if="{{item.status === 'exited'}}" class="room__badge-exited-overlay">🚪</view>
-              </view>
-              <text class="room__badge-name">{{item.nickname}}</text>
-              <text class="room__badge-score {{item.score > 0 ? 'text-success' : item.score < 0 ? 'text-danger' : ''}}">{{item.score > 0 ? '+' : ''}}{{item.score}}</text>
-            </view>
-          </view>
-          <view wx:elif="{{i === 2}}" class="room__player-pos room__player-pos--bottom">
-            <view class="room__badge">
-              <view class="room__badge-avatar {{item.isOwner ? 'room__badge-avatar--owner' : ''}} {{item.status === 'exited' ? 'room__badge-avatar--exited' : ''}}">
-                <image wx:if="{{item.avatar}}" class="room__badge-avatar-img" src="{{item.avatar}}" mode="aspectFill" />
-                <text wx:else style="font-size:40rpx">{{item.nickname ? item.nickname[0] : '?'}}</text>
-                <text wx:if="{{item.isOwner && item.status !== 'exited'}}" class="room__badge-crown">👑</text>
-                <text wx:if="{{item.submitted && item.status !== 'exited'}}" class="room__badge-submitted"></text>
-                <view wx:if="{{item.status === 'exited'}}" class="room__badge-exited-overlay">🚪</view>
-              </view>
-              <text class="room__badge-name">{{item.nickname}}</text>
-              <text class="room__badge-score {{item.score > 0 ? 'text-success' : item.score < 0 ? 'text-danger' : ''}}">{{item.score > 0 ? '+' : ''}}{{item.score}}</text>
-            </view>
-          </view>
-          <view wx:elif="{{i === 3}}" class="room__player-pos room__player-pos--left">
-            <view class="room__badge">
-              <view class="room__badge-avatar {{item.isOwner ? 'room__badge-avatar--owner' : ''}} {{item.status === 'exited' ? 'room__badge-avatar--exited' : ''}}">
-                <image wx:if="{{item.avatar}}" class="room__badge-avatar-img" src="{{item.avatar}}" mode="aspectFill" />
-                <text wx:else style="font-size:40rpx">{{item.nickname ? item.nickname[0] : '?'}}</text>
-                <text wx:if="{{item.isOwner && item.status !== 'exited'}}" class="room__badge-crown">👑</text>
-                <text wx:if="{{item.submitted && item.status !== 'exited'}}" class="room__badge-submitted"></text>
-                <view wx:if="{{item.status === 'exited'}}" class="room__badge-exited-overlay">🚪</view>
-              </view>
-              <text class="room__badge-name">{{item.nickname}}</text>
-              <text class="room__badge-score {{item.score > 0 ? 'text-success' : item.score < 0 ? 'text-danger' : ''}}">{{item.score > 0 ? '+' : ''}}{{item.score}}</text>
-            </view>
+            <text class="room__badge-name">{{item.nickname}}{{item.status === 'exited' ? '(退)' : ''}}</text>
+            <text class="room__badge-score {{item.status === 'exited' ? '' : (item.score > 0 ? 'text-success' : item.score < 0 ? 'text-danger' : '')}}">{{item.score > 0 ? '+' : ''}}{{item.score}}</text>
           </view>
         </view>
       </view>
@@ -145,10 +105,10 @@
             style="position:absolute;left:{{item.chipX}}%;top:{{item.chipY}}%;transform:translate(-50%,-50%)">
             <view class="room__chip-pile">
               <text class="room__chip-score" style="color:{{item.score > 0 ? '#FFE566' : '#FFB3B3'}}">{{item.score > 0 ? '+' : ''}}{{item.score}}</text>
-              <view class="room__chip-stack" style="height:{{44 + (chipCount(item.score) - 1) * 8}}rpx">
+              <view class="room__chip-stack" style="height:{{52 + (chipCount(item.score) - 1) * 10}}rpx">
                 <view wx:for="{{chipCount(item.score)}}" wx:key="*this"
                   class="room__chip-item"
-                  style="bottom:{{index * 8}}rpx;background:{{chipColor(item.score, index === chipCount(item.score) - 1)}};box-shadow:0 {{chipCount(item.score) - index + 1}}rpx {{(chipCount(item.score) - index) * 4 + 4}}rpx rgba(0,0,0,0.42)">
+                  style="bottom:{{index * 10}}rpx;background:{{chipColor(item.score, index === chipCount(item.score) - 1)}}">
                   <view wx:if="{{index === chipCount(item.score) - 1}}" class="room__chip-inner"></view>
                 </view>
               </view>
@@ -156,9 +116,9 @@
           </view>
         </view>
         <!-- 玩家位置（圆周） -->
-        <view wx:for="{{activePlayers}}" wx:key="userId"
-          style="position:absolute;left:{{item.playerX}}%;top:{{item.playerY}}%;transform:translate(-50%,-50%)">
-          <view class="room__badge">
+        <view wx:for="{{room.members}}" wx:key="userId"
+          class="room__player-pos" style="position:absolute;left:{{item.playerX}}%;top:{{item.playerY}}%;transform:translate(-50%,-50%)">
+          <view class="room__badge {{item.status === 'exited' ? 'room__badge--exited' : ''}}">
             <view class="room__badge-avatar {{item.isOwner ? 'room__badge-avatar--owner' : ''}} {{item.status === 'exited' ? 'room__badge-avatar--exited' : ''}}">
               <image wx:if="{{item.avatar}}" class="room__badge-avatar-img" src="{{item.avatar}}" mode="aspectFill" />
               <text wx:else style="font-size:40rpx">{{item.nickname ? item.nickname[0] : '?'}}</text>
@@ -166,8 +126,8 @@
               <text wx:if="{{item.submitted && item.status !== 'exited'}}" class="room__badge-submitted"></text>
               <view wx:if="{{item.status === 'exited'}}" class="room__badge-exited-overlay">🚪</view>
             </view>
-            <text class="room__badge-name">{{item.nickname}}</text>
-            <text class="room__badge-score {{item.score > 0 ? 'text-success' : item.score < 0 ? 'text-danger' : ''}}">{{item.score > 0 ? '+' : ''}}{{item.score}}</text>
+            <text class="room__badge-name">{{item.nickname}}{{item.status === 'exited' ? '(退)' : ''}}</text>
+            <text class="room__badge-score {{item.status === 'exited' ? '' : (item.score > 0 ? 'text-success' : item.score < 0 ? 'text-danger' : '')}}">{{item.score > 0 ? '+' : ''}}{{item.score}}</text>
           </view>
         </view>
       </view>

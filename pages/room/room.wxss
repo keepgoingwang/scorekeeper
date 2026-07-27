@@ -253,29 +253,40 @@
 /* 方形牌桌 - Figma: T=210, BW=54, BH=70 */
 .room__square-table {
   position: relative;
-  width: 636rpx;
-  height: 700rpx;
+  width: 100%;
+  max-width: 720rpx;
+  height: 720rpx;
   margin: 0 auto;
   flex-shrink: 0;
 }
 
 .room__square-surface {
   position: absolute;
-  left: 108rpx;
-  top: 140rpx;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
   width: 420rpx;
   height: 420rpx;
-  border-radius: 40rpx;
-  box-shadow: 0 16rpx 72rpx rgba(0,0,0,0.45), inset 0 2rpx 0 rgba(255,255,255,0.1);
-  border: 8rpx solid rgba(255,255,255,0.14);
+  border-radius: 44rpx;
+  box-shadow: 0 24rpx 80rpx rgba(0,0,0,0.42), 0 6rpx 20rpx rgba(0,0,0,0.3);
+  border: 8rpx solid rgba(255,255,255,0.16);
   overflow: hidden;
+}
+.room__square-surface::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(155deg, rgba(255,255,255,0.24) 0%, rgba(255,255,255,0.04) 34%, rgba(0,0,0,0.10) 62%, rgba(0,0,0,0.34) 100%);
+  box-shadow: inset 0 3rpx 0 rgba(255,255,255,0.28), inset 0 -8rpx 18rpx rgba(0,0,0,0.32);
+  pointer-events: none;
 }
 
 .room__square-felt {
   position: absolute;
   inset: 20rpx;
   border-radius: 24rpx;
-  border: 3rpx dashed rgba(255,255,255,0.18);
+  border: 3rpx dashed rgba(255,255,255,0.24);
   pointer-events: none;
 }
 
@@ -284,7 +295,7 @@
   width: 64rpx;
   height: 64rpx;
   border-radius: 12rpx;
-  border: 2rpx solid rgba(255,255,255,0.1);
+  border: 2rpx solid rgba(255,255,255,0.16);
   pointer-events: none;
 }
 
@@ -306,12 +317,12 @@
 }
 
 .room__square-center-icon {
-  font-size: 52rpx;
+  font-size: 60rpx;
 }
 
 .room__square-center-round {
-  font-size: 18rpx;
-  color: rgba(255,255,255,0.7);
+  font-size: 22rpx;
+  color: rgba(255,255,255,0.9);
   font-weight: 700;
 }
 
@@ -322,30 +333,6 @@
   flex-direction: column;
   align-items: center;
   gap: 4rpx;
-}
-
-.room__player-pos--top {
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-.room__player-pos--right {
-  top: 50%;
-  left: 100%;
-  transform: translateY(-50%);
-}
-
-.room__player-pos--bottom {
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-.room__player-pos--left {
-  top: 50%;
-  right: 100%;
-  transform: translateY(-50%);
 }
 
 /* 圆形牌桌 - Figma: R=108, ORBIT=168, CONT=336 (换算: 1px=1.923rpx) */
@@ -364,16 +351,25 @@
   width: 415rpx;
   height: 415rpx;
   border-radius: 50%;
-  box-shadow: 0 16rpx 72rpx rgba(0,0,0,0.45), inset 0 2rpx 0 rgba(255,255,255,0.1);
-  border: 8rpx solid rgba(255,255,255,0.14);
+  box-shadow: 0 24rpx 80rpx rgba(0,0,0,0.42), 0 6rpx 20rpx rgba(0,0,0,0.3);
+  border: 8rpx solid rgba(255,255,255,0.16);
   overflow: hidden;
+}
+.room__circle-surface::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(circle at 38% 30%, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0) 42%, rgba(0,0,0,0.30) 100%);
+  box-shadow: inset 0 3rpx 0 rgba(255,255,255,0.28), inset 0 -8rpx 18rpx rgba(0,0,0,0.32);
+  pointer-events: none;
 }
 
 .room__circle-felt {
   position: absolute;
   inset: 20rpx;
   border-radius: 50%;
-  border: 3rpx dashed rgba(255,255,255,0.18);
+  border: 3rpx dashed rgba(255,255,255,0.24);
   pointer-events: none;
 }
 
@@ -395,12 +391,12 @@
 }
 
 .room__circle-center-icon {
-  font-size: 44rpx;
+  font-size: 52rpx;
 }
 
 .room__circle-center-round {
-  font-size: 18rpx;
-  color: rgba(255,255,255,0.7);
+  font-size: 22rpx;
+  color: rgba(255,255,255,0.9);
   font-weight: 700;
 }
 
@@ -413,34 +409,48 @@
 }
 
 .room__chip-score {
-  font-size: 20rpx;
+  font-size: 26rpx;
   font-weight: 800;
-  text-shadow: 0 2rpx 8rpx rgba(0,0,0,0.8);
+  text-shadow: 0 2rpx 8rpx rgba(0,0,0,0.85);
 }
 
 .room__chip-stack {
   position: relative;
-  width: 44rpx;
-  height: 44rpx;
+  width: 52rpx;
+  height: 52rpx;
 }
 
 .room__chip-item {
   position: absolute;
   bottom: 0;
-  width: 44rpx;
-  height: 44rpx;
+  width: 52rpx;
+  height: 52rpx;
   border-radius: 50%;
-  border: 4rpx solid rgba(255,255,255,0.76);
+  border: 4rpx solid rgba(255,255,255,0.85);
+  box-shadow: 0 7rpx 0 -1rpx rgba(0,0,0,0.30), 0 9rpx 8rpx rgba(0,0,0,0.32);
+  box-sizing: border-box;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .room__chip-inner {
-  width: 24rpx;
-  height: 24rpx;
+  position: relative;
+  width: 28rpx;
+  height: 28rpx;
   border-radius: 50%;
-  border: 3rpx dashed rgba(255,255,255,0.68);
+  border: 3rpx dashed rgba(255,255,255,0.72);
+}
+.room__chip-inner::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 8rpx;
+  height: 8rpx;
+  margin: -4rpx 0 0 -4rpx;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.85);
 }
 
 /* 玩家徽章 (牌桌外围) - Figma: PlayerBadge */
@@ -1517,3 +1527,7 @@
   box-sizing: border-box;
 }
 .room__mode-switch-btn--hover { background: #E8F8F7; }
+
+/* 牌桌外围退出玩家：名字+分数置灰 */
+.room__badge--exited .room__badge-name,
+.room__badge--exited .room__badge-score { color: #9AA5AC; }

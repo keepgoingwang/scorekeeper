@@ -106,19 +106,18 @@ Page({
       room.currentUserSubmitted = myMember ? myMember.submitted : false;
 
       const activeMembers = room.members.filter(m => m.status === 'active');
-      room.tableShape = activeMembers.length <= 4 ? 'square' : 'circle';
-      const total = activeMembers.length;
+      room.tableShape = room.members.length <= 4 ? 'square' : 'circle';
+      const total = room.members.length;
 
       // Compute player positions and chip positions
       room.members = room.members.map((m, i) => {
-        const idx = activeMembers.findIndex(a => a.userId === m.userId);
-        const pos = idx >= 0 ? idx : i;
+        const pos = i;
         let playerStyle = '';
         let chipX = 50, chipY = 50;
         let playerX = 50, playerY = 50;
 
         if (room.tableShape === 'square') {
-          const positions = ['top:0;left:50%;transform:translateX(-50%)', 'top:50%;left:100%;transform:translateY(-50%)', 'bottom:0;left:50%;transform:translateX(-50%)', 'top:50%;right:100%;transform:translateY(-50%)'];
+          const positions = ['top:0;left:50%;transform:translateX(-50%)', 'top:50%;right:0;transform:translateY(-50%)', 'bottom:0;left:50%;transform:translateX(-50%)', 'top:50%;left:0;transform:translateY(-50%)'];
           playerStyle = positions[pos % 4] || '';
           const chipPos = [{ x: 50, y: 19 }, { x: 80, y: 50 }, { x: 50, y: 81 }, { x: 20, y: 50 }];
           chipX = chipPos[pos % 4].x;
