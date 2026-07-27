@@ -1,5 +1,5 @@
 // pages/login/login.js
-// 简化版微信登录：点击按钮 → chooseAvatar → 微信昵称建议 → 自动登录
+// 微信登录：选择头像 + 自动填入昵称 → 点击登录
 import { userApi } from '../../services/user.service';
 import { API_BASE } from '../../utils/constants.util';
 
@@ -7,59 +7,33 @@ Page({
   data: {
     avatar: '',
     nickname: '',
-    loading: false,
-    showNickname: false,
-    autoFocus: false
+    loading: false
   },
 
-  /** 选择微信头像后，显示昵称输入框让用户点一下微信建议 */
   onChooseAvatar(e) {
-    const avatar = e.detail.avatarUrl || '';
-    this.setData({
-      avatar,
-      showNickname: true,
-      autoFocus: true
-    });
+    this.setData({ avatar: e.detail.avatarUrl || '' });
   },
 
-  /** 昵称自动填入（来自微信键盘建议） */
   onNicknameInput(e) {
-    const nickname = e.detail.value || '';
-    if (nickname) {
-      this.setData({ nickname });
-    }
+    const val = e.detail.value || '';
+    if (val) this.setData({ nickname: val });
   },
 
-  /** 用户点击微信键盘的"确认"或昵称建议后，自动登录 */
-  onNicknameConfirm(e) {
-    const nickname = e.detail.value || '';
-    if (nickname) {
-      this.setData({ nickname });
-    }
-    this.doLogin();
-  },
-
-  /** 执行登录：上传头像 → wx.login → 调后端登录接口 */
-  async doLogin() {
+  async onLogin() {
     if (this.data.loading) return;
+    const nickname = this.data.nickname.trim();
+    if (!nickname) {
+      return wx.showToast({ title: '请点击昵称输入框', icon: 'none' });
+    }
     this.setData({ loading: true });
     try {
-      // 1. 上传头像到服务器
       let avatarUrl = '';
       if (this.data.avatar) {
         avatarUrl = await this.uploadAvatar(this.data.avatar);
       }
-
-      // 2. wx.login 获取 code
       const { code } = await wx.login();
+      const res = await userApi.login(code, { nickname, avatar: avatarUrl });
 
-      // 3. 调后端登录接口
-      const res = await userApi.login(code, {
-        nickname: this.data.nickname || '牌友',
-        avatar: avatarUrl
-      });
-
-      // 4. 保存登录态
       const app = getApp();
       app.globalData.token = res.data.token;
       app.globalData.userInfo = res.data.user;
@@ -74,7 +48,6 @@ Page({
     }
   },
 
-  /** 上传头像到服务器，返回可访问 URL */
   uploadAvatar(filePath) {
     return new Promise((resolve, reject) => {
       wx.uploadFile({
@@ -95,9 +68,7 @@ Page({
     });
   },
 
-  /** 打开协议页面 */
   onOpenPage(e) {
-    const url = e.currentTarget.dataset.url;
-    wx.navigateTo({ url });
+    wx.navigateTo({ url: e.currentTarget.dataset.url });
   }
 });

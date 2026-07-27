@@ -1,4 +1,4 @@
-<!--pages/login/login.wxml - 简化版登录页 - 一键微信登录 -->
+<!--pages/login/login.wxml - 简化版登录页 -->
 <view class="login">
   <view class="login__header">
     <view class="login__logo-wrap">
@@ -9,14 +9,19 @@
   </view>
 
   <view class="login__card">
-    <!-- 微信登录按钮（点击即触发 chooseAvatar + 自动填入昵称） -->
-    <button class="login__btn" open-type="chooseAvatar" bindchooseavatar="onChooseAvatar">
-      <text class="login__btn-icon">💬</text>
-      <text class="login__btn-text">微信一键登录</text>
+    <!-- 头像选择 -->
+    <button class="login__avatar-btn" open-type="chooseAvatar" bindchooseavatar="onChooseAvatar">
+      <image wx:if="{{avatar}}" class="login__avatar-img" src="{{avatar}}" mode="aspectFill" />
+      <text wx:else class="login__avatar-placeholder">🤠</text>
     </button>
 
-    <!-- 昵称输入框：头像选择后自动聚焦，点微信建议即可填入 -->
-    <input wx:if="{{showNickname}}" class="login__nickname" type="nickname" placeholder="你的微信昵称" bindinput="onNicknameInput" bindconfirm="onNicknameConfirm" focus="{{autoFocus}}" />
+    <!-- 昵称输入（type="nickname" 自动填充微信昵称） -->
+    <input class="login__nickname" type="nickname" placeholder="你的微信昵称" bindinput="onNicknameInput" />
+
+    <!-- 登录按钮 -->
+    <button class="login__btn" bindtap="onLogin" loading="{{loading}}">
+      <text class="login__btn-text">微信登录</text>
+    </button>
   </view>
 
   <view class="login__footer">

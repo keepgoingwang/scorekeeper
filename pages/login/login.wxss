@@ -1,4 +1,4 @@
-/* pages/login/login.wxss - 简化版登录页 */
+/* pages/login/login.wxss - 登录页 */
 .login {
   display: flex;
   flex-direction: column;
@@ -12,7 +12,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 160rpx 0 48rpx;
+  padding: 140rpx 0 48rpx;
 }
 
 .login__logo-wrap {
@@ -47,40 +47,40 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 32rpx;
 }
 
-/* 微信登录按钮 - 大号品牌按钮 */
-.login__btn {
-  width: 100%;
-  height: 96rpx;
-  line-height: 96rpx;
-  background: linear-gradient(135deg, #4ECDC4 0%, #45B7D1 100%);
-  color: #fff;
-  border-radius: 48rpx;
-  font-size: 30rpx;
-  font-weight: 700;
-  box-shadow: 0 8rpx 32rpx rgba(78,205,196,0.35);
-  border: none;
+/* 头像选择 */
+.login__avatar-btn {
+  width: 160rpx;
+  height: 160rpx;
+  border-radius: 50%;
+  padding: 0;
+  margin: 0;
+  background: #E8F8F7;
+  border: 6rpx solid #E8F8F7;
+  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 12rpx;
-  margin: 0;
-  padding: 0;
+  box-shadow: 0 4rpx 16rpx rgba(78,205,196,0.15);
 }
 
-.login__btn::after { border: none; }
+.login__avatar-btn::after { border: none; }
 
-.login__btn:active { transform: scale(0.97); opacity: 0.9; }
+.login__avatar-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
 
-.login__btn-icon { font-size: 36rpx; }
+.login__avatar-placeholder {
+  font-size: 64rpx;
+}
 
-.login__btn-text { font-size: 30rpx; }
-
-/* 昵称输入框 - 头像选择后显示，点微信建议即填入 */
+/* 昵称输入框 */
 .login__nickname {
   width: 100%;
-  margin-top: 36rpx;
   padding: 30rpx 28rpx;
   background: #F8FAFB;
   border-radius: 24rpx;
@@ -96,6 +96,25 @@
 .login__nickname:focus {
   border-color: #4ECDC4;
 }
+
+/* 登录按钮 */
+.login__btn {
+  width: 100%;
+  height: 88rpx;
+  line-height: 88rpx;
+  background: linear-gradient(135deg, #4ECDC4 0%, #45B7D1 100%);
+  color: #fff;
+  border-radius: 44rpx;
+  font-size: 30rpx;
+  font-weight: 700;
+  box-shadow: 0 8rpx 32rpx rgba(78,205,196,0.35);
+  border: none;
+  margin: 0;
+  padding: 0;
+}
+
+.login__btn::after { border: none; }
+.login__btn:active { opacity: 0.9; }
 
 .login__footer {
   margin-top: 48rpx;
