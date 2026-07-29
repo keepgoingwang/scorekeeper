@@ -1,4 +1,4 @@
-<!--pages/login/login.wxml - 沉浸式一键登录（零授权弹窗）-->
+<!--pages/login/login.wxml - 沉浸式一键登录（手动同意协议）-->
 <view class="login">
   <!-- 品牌 hero -->
   <view class="login__hero" style="padding-top: {{headerPaddingTop}}px;">
@@ -17,13 +17,13 @@
     <text class="login__tip">首次登录使用默认头像与昵称，可在「我的」修改</text>
   </view>
 
-  <!-- 协议 -->
+  <!-- 协议勾选 -->
   <view class="login__footer">
-    <text class="login__hint">
-      登录即代表同意
-      <text class="login__hint-link" data-url="/pages/agreement/agreement" bindtap="onOpenPage">《用户协议》</text>
-      与
-      <text class="login__hint-link" data-url="/pages/privacy/privacy" bindtap="onOpenPage">《隐私政策》</text>
-    </text>
+    <view class="login__agree-row" bindtap="onToggleAgree">
+      <view class="login__checkbox {{agreed ? 'login__checkbox--checked' : ''}}">
+        <text wx:if="{{agreed}}" class="login__checkbox-icon">✓</text>
+      </view>
+      <text class="login__agree-text">我已阅读并同意<text class="login__agree-link" catchtap="onOpenPage" data-url="/pages/agreement/agreement">《用户协议》</text>与<text class="login__agree-link" catchtap="onOpenPage" data-url="/pages/privacy/privacy">《隐私政策》</text></text>
+    </view>
   </view>
 </view>

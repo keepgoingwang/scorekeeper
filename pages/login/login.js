@@ -1,11 +1,11 @@
 // pages/login/login.js
-// 微信一键登录：点按钮 → wx.login → 换 token → 进首页，零授权弹窗。
-// 首次登录使用默认头像与昵称（后端缺省填充），真实资料可在「我的-编辑资料」修改。
+// 微信一键登录：点按钮 → 校验协议勾选 → wx.login → 换 token → 进首页
 import { userApi } from '../../services/user.service';
 
 Page({
   data: {
     loading: false,
+    agreed: false,
     headerPaddingTop: 0
   },
 
@@ -17,9 +17,28 @@ Page({
     this.setData({ headerPaddingTop: statusBarHeight + navBarHeight });
   },
 
-  /** 一键登录：直接拿 code 换 token，不弹任何授权 */
+  /** 切换协议勾选 */
+  onToggleAgree() {
+    this.setData({ agreed: !this.data.agreed });
+  },
+
+  /** 一键登录：校验协议 → 拿 code 换 token */
   async onLogin() {
     if (this.data.loading) return;
+    if (!this.data.agreed) {
+      return wx.showModal({
+        title: '隐私协议',
+        content: '登录前请先阅读并同意《用户协议》与《隐私政策》',
+        confirmText: '同意协议',
+        cancelText: '取消',
+        success: (res) => {
+          if (res.confirm) {
+            this.setData({ agreed: true });
+            this.onLogin();
+          }
+        }
+      });
+    }
     this.setData({ loading: true });
     try {
       const { code } = await wx.login();

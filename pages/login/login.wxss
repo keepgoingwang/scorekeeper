@@ -102,15 +102,54 @@
   line-height: 1.5;
 }
 
-/* ===== 协议 ===== */
+/* ===== 协议勾选 ===== */
 .login__footer {
   margin-top: 40rpx;
   padding: 0 48rpx;
-  text-align: center;
+  width: 100%;
+  box-sizing: border-box;
 }
-.login__hint {
+
+.login__agree-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12rpx;
+}
+
+/* 方形勾选框 */
+.login__checkbox {
+  width: 32rpx;
+  height: 32rpx;
+  border-radius: 4rpx;
+  border: 2rpx solid #C8CED3;
+  background: #FFFFFF;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+}
+
+.login__checkbox--checked {
+  background: #4ECDC4;
+  border-color: #4ECDC4;
+}
+
+.login__checkbox-icon {
+  font-size: 20rpx;
+  color: #FFFFFF;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.login__agree-text {
   font-size: 22rpx;
-  color: #B0B8BE;
-  line-height: 1.7;
+  color: #9AA5AC;
+  line-height: 32rpx;
+  white-space: nowrap;
 }
-.login__hint-link { color: #4ECDC4; }
+
+.login__agree-link {
+  color: #4ECDC4;
+}
