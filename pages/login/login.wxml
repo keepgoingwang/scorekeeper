@@ -1,4 +1,4 @@
-<!--pages/login/login.wxml - 沉浸式一键登录（手动同意协议）-->
+<!--pages/login/login.wxml - 沉浸式登录：昵称一步 + 协议勾选-->
 <view class="login">
   <!-- 品牌 hero -->
   <view class="login__hero" style="padding-top: {{headerPaddingTop}}px;">
@@ -9,12 +9,22 @@
     <text class="login__desc">打牌计分，一键搞定</text>
   </view>
 
-  <!-- 登录面板（浮在 hero 下沿） -->
+  <!-- 登录面板：昵称输入（自动聚焦弹微信昵称建议）+ 登录按钮 -->
   <view class="login__panel">
+    <input
+      class="login__nickname"
+      type="nickname"
+      placeholder="点击此处使用微信昵称"
+      placeholder-class="login__nickname-ph"
+      focus="{{autoFocus}}"
+      maxlength="10"
+      bindinput="onNicknameInput"
+      bindconfirm="onLogin"
+    />
     <button class="login__btn" bindtap="onLogin" loading="{{loading}}">
       <text class="login__btn-text">微信一键登录</text>
     </button>
-    <text class="login__tip">首次登录使用默认头像与昵称，可在「我的」修改</text>
+    <text class="login__tip">点击上方输入框，可直接使用微信昵称</text>
   </view>
 
   <!-- 协议勾选 -->

@@ -1,7 +1,7 @@
 // pages/profile/profile.js
 // 我的页面：个人资料卡片 + 功能入口（PRD §3.1）
 import { userApi } from '../../services/user.service';
-import { assetUrl } from '../../utils/format.util';
+import { assetUrl, userEmoji } from '../../utils/format.util';
 
 Page({
   data: {
@@ -52,12 +52,12 @@ Page({
   async loadProfile() {
     const cached = getApp().globalData.userInfo;
     if (cached) {
-      this.setData({ userInfo: cached, avatarUrl: assetUrl(cached.avatar) });
+      this.setData({ userInfo: cached, avatarUrl: assetUrl(cached.avatar), emoji: userEmoji(cached._id) });
     }
     this.setData({ loading: true });
     try {
       const res = await userApi.getProfile();
-      this.setData({ userInfo: res.data, avatarUrl: assetUrl(res.data.avatar) });
+      this.setData({ userInfo: res.data, avatarUrl: assetUrl(res.data.avatar), emoji: userEmoji(res.data._id) });
       getApp().globalData.userInfo = res.data;
       getApp().globalData.userRole = res.data.role || 'user';
     } catch (e) {

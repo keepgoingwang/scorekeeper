@@ -1,6 +1,6 @@
 // pages/room/room.js - 房间页 - 完全照搬Figma设计
 import { roomApi } from '../../services/room.service';
-import { formatRoomNo, formatScore, assetUrl } from '../../utils/format.util';
+import { formatRoomNo, formatScore, assetUrl, userEmoji } from '../../utils/format.util';
 import { SETTLE_COUNTDOWN } from '../../utils/constants.util';
 import { socket } from '../../utils/socket.util';
 
@@ -135,7 +135,7 @@ Page({
         }
 
         const chipCount = m.status === 'active' ? Math.min(Math.ceil(Math.abs(m.score) / 65), 6) : 0;
-        return { ...m, avatar: assetUrl(m.avatar), playerStyle, playerX, playerY, chipX, chipY, chipCount };
+        return { ...m, avatar: assetUrl(m.avatar), emoji: userEmoji(m.userId), playerStyle, playerX, playerY, chipX, chipY, chipCount };
       });
 
       // Compute modeInfo

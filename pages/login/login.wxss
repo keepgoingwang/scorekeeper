@@ -153,3 +153,19 @@
 .login__agree-link {
   color: #4ECDC4;
 }
+
+/* 昵称输入框 */
+.login__nickname {
+  width: 100%;
+  height: 96rpx;
+  padding: 0 32rpx;
+  background: #F8FAFB;
+  border-radius: 28rpx;
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #2C3E50;
+  border: 3rpx solid #E8ECEF;
+  box-sizing: border-box;
+  text-align: center;
+}
+.login__nickname-ph { color: #B0B8BE; font-weight: 500; }

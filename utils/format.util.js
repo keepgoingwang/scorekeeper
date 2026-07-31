@@ -14,6 +14,17 @@ export function assetUrl(path) {
   return path;
 }
 
+/** 稳定身份 emoji：按用户 id 哈希从词表选取，同一用户始终同一张脸，用于无头像时占位 */
+const EMOJI_LIST = ['🦊','🐼','🐔','🐷','🦄','🦀','🦉','🐶','🐱','🐰','🐸','🐵','🦁','🐯','🐻','🐨','🐹','🐮','🐴','🐍','🐲','🦋','🐝','🐞'];
+export function userEmoji(id) {
+  const raw = id && (typeof id === 'object' ? (id._id || id.userId || id.id || '') : id);
+  const key = String(raw || '');
+  if (!key) return '🎲';
+  let h = 0;
+  for (let i = 0; i < key.length; i++) h = (h * 31 + key.charCodeAt(i)) >>> 0;
+  return EMOJI_LIST[h % EMOJI_LIST.length];
+}
+
 /**
  * 根据积分返回语义色 class（PRD §4.2：绿色正数/红色负数/灰色零）
  * @param {number} score

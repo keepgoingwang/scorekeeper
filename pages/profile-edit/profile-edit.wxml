@@ -10,7 +10,7 @@
           src="{{avatar}}"
           mode="aspectFill"
         />
-        <view wx:else class="profile-edit__avatar">{{nickname ? nickname[0] : '🤠'}}</view>
+        <view wx:else class="profile-edit__avatar">{{emoji || '🎲'}}</view>
         <text class="profile-edit__avatar-hint">点击更换头像</text>
       </button>
     </view>

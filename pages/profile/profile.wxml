@@ -15,7 +15,7 @@
           src="{{avatarUrl}}"
           mode="aspectFill"
         />
-        <view wx:else class="profile__avatar">{{userInfo.nickname ? userInfo.nickname[0] : '🤠'}}</view>
+        <view wx:else class="profile__avatar">{{emoji || '🎲'}}</view>
         <view class="profile__info">
           <view class="profile__name">{{userInfo.nickname || '未登录'}}</view>
           <view class="profile__id">ID: {{userInfo._id ? userInfo._id.slice(-8) : '—'}}</view>

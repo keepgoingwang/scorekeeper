@@ -2,6 +2,7 @@
 // 资料编辑页（PRD §3.2）：头像 / 昵称 / 年龄，ID 不可改 - 基于Figma设计重构
 import { userApi } from '../../services/user.service';
 import { API_BASE } from '../../utils/constants.util';
+import { userEmoji } from '../../utils/format.util';
 
 Page({
   data: {
@@ -20,7 +21,8 @@ Page({
         avatar: user.avatar || '',
         nickname: user.nickname || '',
         age: String(user.age || ''),
-        userId: user._id ? user._id.slice(-8) : '—'
+        userId: user._id ? user._id.slice(-8) : '—',
+        emoji: userEmoji(user._id)
       });
     }
   },

@@ -11,7 +11,7 @@
         <view class="avatar-cell__head-wrap">
           <view class="avatar-cell__head" style="background:{{item.isOwner ? 'linear-gradient(135deg, #4ECDC4 0%, #45B7D1 100%)' : '#E8F8F7'}};border-color:{{item.isOwner ? '#4ECDC4' : '#E8ECEF'}}">
             <image wx:if="{{item.avatar}}" class="avatar-cell__head-img" src="{{item.avatar}}" mode="aspectFill" lazy-load />
-            <text wx:else style="font-size:42rpx">{{item.nickname ? item.nickname[0] : '?'}}</text>
+            <text wx:else style="font-size:42rpx">{{item.emoji || '🎲'}}</text>
           </view>
           <text wx:if="{{item.isOwner && item.status !== 'exited'}}" class="avatar-cell__crown">👑</text>
           <text wx:if="{{item.submitted && item.status !== 'exited'}}" class="avatar-cell__submitted"></text>
@@ -79,7 +79,7 @@
           <view class="room__badge {{item.status === 'exited' ? 'room__badge--exited' : ''}}">
             <view class="room__badge-avatar {{item.isOwner ? 'room__badge-avatar--owner' : ''}} {{item.status === 'exited' ? 'room__badge-avatar--exited' : ''}}">
               <image wx:if="{{item.avatar}}" class="room__badge-avatar-img" src="{{item.avatar}}" mode="aspectFill" />
-              <text wx:else style="font-size:40rpx">{{item.nickname ? item.nickname[0] : '?'}}</text>
+              <text wx:else style="font-size:40rpx">{{item.emoji || '🎲'}}</text>
               <text wx:if="{{item.isOwner && item.status !== 'exited'}}" class="room__badge-crown">👑</text>
               <text wx:if="{{item.submitted && item.status !== 'exited'}}" class="room__badge-submitted"></text>
               <view wx:if="{{item.status === 'exited'}}" class="room__badge-exited-overlay">🚪</view>
@@ -119,7 +119,7 @@
           <view class="room__badge {{item.status === 'exited' ? 'room__badge--exited' : ''}}">
             <view class="room__badge-avatar {{item.isOwner ? 'room__badge-avatar--owner' : ''}} {{item.status === 'exited' ? 'room__badge-avatar--exited' : ''}}">
               <image wx:if="{{item.avatar}}" class="room__badge-avatar-img" src="{{item.avatar}}" mode="aspectFill" />
-              <text wx:else style="font-size:40rpx">{{item.nickname ? item.nickname[0] : '?'}}</text>
+              <text wx:else style="font-size:40rpx">{{item.emoji || '🎲'}}</text>
               <text wx:if="{{item.isOwner && item.status !== 'exited'}}" class="room__badge-crown">👑</text>
               <text wx:if="{{item.submitted && item.status !== 'exited'}}" class="room__badge-submitted"></text>
               <view wx:if="{{item.status === 'exited'}}" class="room__badge-exited-overlay">🚪</view>
@@ -274,7 +274,7 @@
           >
             <view class="room__pay-avatar">
               <image wx:if="{{item.avatar}}" class="room__pay-avatar-img" src="{{item.avatar}}" mode="aspectFill" />
-              <text wx:else style="font-size:48rpx">{{item.nickname ? item.nickname[0] : '?'}}</text>
+              <text wx:else style="font-size:48rpx">{{item.emoji || '🎲'}}</text>
             </view>
             <view class="room__pay-info">
               <text class="room__pay-name">{{item.nickname}}</text>

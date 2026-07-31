@@ -6,6 +6,8 @@ Page({
   data: {
     loading: false,
     agreed: false,
+    nickname: '',
+    autoFocus: false,
     headerPaddingTop: 0
   },
 
@@ -15,11 +17,16 @@ Page({
     const statusBarHeight = sysInfo.statusBarHeight || 20;
     const navBarHeight = (menuBtn.bottom - menuBtn.top) + (menuBtn.top - statusBarHeight) * 2;
     this.setData({ headerPaddingTop: statusBarHeight + navBarHeight });
+    setTimeout(() => this.setData({ autoFocus: true }), 300);
   },
 
   /** 切换协议勾选 */
   onToggleAgree() {
     this.setData({ agreed: !this.data.agreed });
+  },
+
+  onNicknameInput(e) {
+    this.setData({ nickname: e.detail.value || '' });
   },
 
   /** 一键登录：校验协议 → 拿 code 换 token */
@@ -39,10 +46,14 @@ Page({
         }
       });
     }
+    const nickname = (this.data.nickname || '').trim();
+    if (!nickname) {
+      return wx.showToast({ title: '请点击输入框选择微信昵称', icon: 'none' });
+    }
     this.setData({ loading: true });
     try {
       const { code } = await wx.login();
-      const res = await userApi.login(code, {});
+      const res = await userApi.login(code, { nickname });
 
       const app = getApp();
       app.globalData.token = res.data.token;
