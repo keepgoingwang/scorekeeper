@@ -23,8 +23,8 @@ function handleUnauthorized() {
     app.globalData.userRole = 'visitor';
     app.globalData.userInfo = null;
   }
-  // token 失效，跳转登录页重新登录
-  wx.reLaunch({ url: '/pages/login/login' });
+  // 游客态（从未登录过）不强制跳登录页，避免审核不合规
+  // 仅已登录用户 token 过期时才引导重新登录
 }
 
 const http = {

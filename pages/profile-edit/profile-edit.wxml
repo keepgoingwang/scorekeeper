@@ -1,11 +1,6 @@
 <!--pages/profile-edit/profile-edit.wxml - 编辑资料 - 完全照搬Figma设计-->
 <view class="profile-edit">
-  <view class="profile-edit__header">
-    <button class="profile-edit__back" bindtap="onBack">← 返回</button>
-    <text class="profile-edit__header-title">编辑资料</text>
-  </view>
-
-  <view class="profile-edit__body">
+<view class="profile-edit__body">
     <!-- 头像选择 -->
     <view class="profile-edit__avatar-area">
       <button class="profile-edit__avatar-btn" open-type="chooseAvatar" bindchooseavatar="onChooseAvatar">

@@ -7,33 +7,6 @@
   overflow: hidden;
 }
 
-.settings__header {
-  background: var(--mint-grad);
-  padding: 28rpx 32rpx;
-  display: flex;
-  align-items: center;
-  gap: 24rpx;
-  flex-shrink: 0;
-}
-
-.settings__back {
-  font-size: 28rpx;
-  color: #fff;
-  padding: 0;
-  background: none;
-  border: none;
-  margin: 0;
-  line-height: 1;
-}
-
-.settings__back::after { border: none; }
-
-.settings__header-title {
-  font-size: 32rpx;
-  font-weight: 800;
-  color: #fff;
-}
-
 .settings__body {
   flex: 1;
   overflow-y: auto;

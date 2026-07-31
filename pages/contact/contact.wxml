@@ -1,11 +1,6 @@
 <!--pages/contact/contact.wxml - 联系我们 - 完全照搬Figma设计-->
 <view class="contact">
-  <view class="contact__header">
-    <button class="contact__back" bindtap="onBack">← 返回</button>
-    <text class="contact__header-title">📋 联系我们</text>
-  </view>
-
-  <view class="contact__body">
+<view class="contact__body">
     <!-- 客服支持 -->
     <view class="contact__section">
       <view class="contact__section-header">

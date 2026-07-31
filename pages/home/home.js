@@ -13,11 +13,19 @@ Page({
   },
 
   onShow() {
-    if (!getApp().globalData.token) {
-      wx.redirectTo({ url: '/pages/login/login' });
-      return;
+    // 游客可浏览首页；仅已登录时加载当前房间
+    if (getApp().globalData.token) {
+      this.loadCurrentRoom();
+    } else {
+      this.setData({ currentRoom: null });
     }
-    this.loadCurrentRoom();
+  },
+
+  /** 需要登录的操作：未登录时引导去登录页，返回 true 表示已登录可继续 */
+  requireLogin() {
+    if (getApp().globalData.token) return true;
+    wx.navigateTo({ url: '/pages/login/login' });
+    return false;
   },
 
   onShareAppMessage() {
@@ -39,6 +47,7 @@ Page({
 
   // ===== 创建房间 =====
   async onCreateRoom() {
+    if (!this.requireLogin()) return;
     const room = this.data.currentRoom;
     if (room) {
       const confirmed = await this.confirmExitOldRoom(room.roomNo, '开房');
@@ -57,6 +66,7 @@ Page({
 
   // ===== 加入房间 - Figma弹窗 =====
   onJoinRoom() {
+    if (!this.requireLogin()) return;
     this.setData({ joinVisible: true, joinCode: '' });
   },
 

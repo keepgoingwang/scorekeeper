@@ -1,11 +1,6 @@
 <!--pages/help/help.wxml - 帮助反馈 - 完全照搬Figma设计-->
 <view class="help">
-  <view class="help__header">
-    <button class="help__back" bindtap="onBack">← 返回</button>
-    <text class="help__header-title">❓ 帮助反馈</text>
-  </view>
-
-  <view class="help__body">
+<view class="help__body">
     <!-- FAQ -->
     <view>
       <text class="help__section-title">常见问题 FAQ</text>

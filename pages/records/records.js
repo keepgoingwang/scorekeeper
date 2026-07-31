@@ -26,10 +26,6 @@ Page({
   },
 
   /** 返回上一页 */
-  onBack() {
-    wx.navigateBack();
-  },
-
   /** 分享 */
   onShareAppMessage() {
     return { title: '我的棋牌战绩', path: '/pages/home/home' };

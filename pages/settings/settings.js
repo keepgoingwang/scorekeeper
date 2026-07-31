@@ -26,11 +26,6 @@ Page({
       vibrateEnabled: wx.getStorageSync('vibrateEnabled') !== false
     });
   },
-
-  onBack() {
-    wx.navigateBack();
-  },
-
   onSelectSkin(e) {
     const skin = e.currentTarget.dataset.skin;
     this.setData({ currentSkin: skin });

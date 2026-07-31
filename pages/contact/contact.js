@@ -17,11 +17,6 @@ Page({
       version: accountInfo.miniProgram.version || '1.0.0'
     });
   },
-
-  onBack() {
-    wx.navigateBack();
-  },
-
   onCopyWechat() {
     wx.setClipboardData({
       data: this.data.contactInfo.wechat,

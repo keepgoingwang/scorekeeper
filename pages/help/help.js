@@ -19,11 +19,6 @@ Page({
     submitting: false,
     submitted: false
   },
-
-  onBack() {
-    wx.navigateBack();
-  },
-
   onToggleFaq(e) {
     const idx = e.currentTarget.dataset.index;
     this.setData({

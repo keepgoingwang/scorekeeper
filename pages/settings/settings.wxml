@@ -1,11 +1,6 @@
 <!--pages/settings/settings.wxml - 系统设置 - 完全照搬Figma设计-->
 <view class="settings">
-  <view class="settings__header">
-    <button class="settings__back" bindtap="onBack">← 返回</button>
-    <text class="settings__header-title">⚙️ 系统设置</text>
-  </view>
-
-  <view class="settings__body">
+<view class="settings__body">
     <!-- 牌桌皮肤 -->
     <view class="settings__section">
       <text class="settings__section-title">🎨 牌桌皮肤</text>

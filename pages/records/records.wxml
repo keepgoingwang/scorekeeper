@@ -1,12 +1,6 @@
 <!--pages/records/records.wxml - 战绩查询 - 完全照搬Figma设计-->
 <view class="records">
-  <!-- 头部 -->
-  <view class="records__header">
-    <button class="records__back" bindtap="onBack">← 返回</button>
-    <text class="records__header-title">📊 战绩查询</text>
-  </view>
-
-  <view class="records__body">
+<view class="records__body">
     <!-- 统计网格 -->
     <view class="records__stats-grid">
       <view class="records__stat-card">

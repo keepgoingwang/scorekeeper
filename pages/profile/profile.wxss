@@ -179,3 +179,23 @@
   color: var(--text-sub);
   font-size: 36rpx;
 }
+/* 退出登录 */
+.profile__logout-wrap {
+  padding: 48rpx 32rpx 80rpx;
+}
+
+.profile__logout-btn {
+  width: 100%;
+  height: 88rpx;
+  line-height: 88rpx;
+  background: #FFFFFF;
+  border: 2rpx solid #E8ECEF;
+  border-radius: 44rpx;
+  color: #FF6B6B;
+  font-size: 30rpx;
+  font-weight: 700;
+  margin: 0;
+  padding: 0;
+}
+.profile__logout-btn::after { border: none; }
+.profile__logout-btn:active { background: #FFF2F2; }

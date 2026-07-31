@@ -24,11 +24,6 @@ Page({
       });
     }
   },
-
-  onBack() {
-    wx.navigateBack();
-  },
-
   onChooseAvatar(e) {
     this.setData({ avatar: e.detail.avatarUrl });
   },
