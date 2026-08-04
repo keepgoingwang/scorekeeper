@@ -52,6 +52,10 @@ Page({
     const roomNo = options.roomNo || '';
     this.setData({ roomNo });
     wx.setNavigationBarTitle({ title: `房间号：${roomNo}` });
+    if (!getApp().globalData.token) {
+      wx.redirectTo({ url: `/pages/login/login?roomNo=${roomNo}` });
+      return;
+    }
     this.loadDetail();
     this.bindSocket();
     if (options.share === '1') {
@@ -112,6 +116,7 @@ Page({
       const myId = getApp().globalData.userInfo?._id;
       const myMember = room.members.find(m => m.userId === myId);
       room.currentUserSubmitted = myMember ? myMember.submitted : false;
+      this.ensureJoined(room);
 
       const activeMembers = room.members.filter(m => m.status === 'active');
       room.tableShape = room.members.length <= 4 ? 'square' : 'circle';
@@ -170,6 +175,24 @@ Page({
     }
   },
 
+  /** 分享进入等非成员场景自动补加入（join 幂等；活跃成员跳过，避免重复进入动态） */
+  async ensureJoined(room) {
+    if (this._joinAttempted) return;
+    const app = getApp();
+    if (app.loginReady) await app.loginReady;
+    const myId = app.globalData.userInfo?._id;
+    if (!myId) return;
+    const me = room.members.find(m => m.userId === myId);
+    if (me && me.status === 'active') return;
+    this._joinAttempted = true;
+    try {
+      await roomApi.join(this.data.roomNo);
+      this.loadDetail();
+    } catch (e) {
+      wx.showToast({ title: e.message || '加入房间失败', icon: 'none' });
+    }
+  },
+
   bindSocket() {
     const token = getApp().globalData.token;
     socket.connect(token);
@@ -191,7 +214,7 @@ Page({
         this.setData({ settleModalVisible: false });
       }
       if (payload.rebalance) {
-        wx.showToast({ title: `收支不平衡（差额${payload.diff}），请重新输入`, icon: 'none', duration: 3000 });
+        wx.showToast({ title: `收支不平衡（差额${payload.diff}），请重新输入`, icon: 'none', duration: 10000 });
       }
     });
     this._unsubDissolved = socket.on('room:dissolved', () => {

@@ -11,13 +11,15 @@ Page({
     headerPaddingTop: 0
   },
 
-  onLoad() {
+  onLoad(options) {
     const sysInfo = wx.getWindowInfo();
     const menuBtn = wx.getMenuButtonBoundingClientRect();
     const statusBarHeight = sysInfo.statusBarHeight || 20;
     const navBarHeight = (menuBtn.bottom - menuBtn.top) + (menuBtn.top - statusBarHeight) * 2;
     this.setData({ headerPaddingTop: statusBarHeight + navBarHeight });
     setTimeout(() => this.setData({ autoFocus: true }), 300);
+    // 从分享房间进入：登录成功后直接回到该房间
+    this.redirectUrl = options.roomNo ? `/pages/room/room?roomNo=${options.roomNo}` : '';
   },
 
   /** 切换协议勾选 */
@@ -61,7 +63,11 @@ Page({
       app.globalData.userRole = res.data.user.role || 'user';
       wx.setStorageSync('token', res.data.token);
 
-      wx.switchTab({ url: '/pages/home/home' });
+      if (this.redirectUrl) {
+        wx.redirectTo({ url: this.redirectUrl });
+      } else {
+        wx.switchTab({ url: '/pages/home/home' });
+      }
     } catch (e) {
       wx.showToast({ title: e.message || '登录失败', icon: 'none' });
     } finally {

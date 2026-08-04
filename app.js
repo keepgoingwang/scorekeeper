@@ -9,9 +9,7 @@ App({
 
   onLaunch() {
     // 有本地 token 则校验恢复；无 token 时由首页引导至登录页
-    if (this.globalData.token) {
-      this.restoreLogin();
-    }
+    this.loginReady = this.globalData.token ? this.restoreLogin() : Promise.resolve();
   },
 
   onError(error) {
