@@ -7,7 +7,7 @@ const { BizError } = require('../middleware/error');
 const roomService = require('./room.service');
 const socket = require('../utils/socket.util');
 
-const COUNTDOWN_MS = 60 * 1000;
+const COUNTDOWN_MS = 90 * 1000;
 
 async function loadRoom(roomNo) {
   const room = await Room.findOne({ roomNo, isDeleted: false });
@@ -49,7 +49,7 @@ async function startSettle(roomNo, userId) {
     roomNo, round: room.round, deadline: settle.deadline, state: 'input'
   });
 
-  // 60s 后自动校验（TODO: 进程重启会丢失，生产应改用任务表 + 定时扫描）
+  // 90s 后自动校验（TODO: 进程重启会丢失，生产应改用任务表 + 定时扫描）
   setTimeout(() => verifyAndApply(roomNo, settle._id).catch(console.error), COUNTDOWN_MS);
   return { round: room.round, deadline: settle.deadline };
 }

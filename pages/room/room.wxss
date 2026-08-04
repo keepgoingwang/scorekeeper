@@ -983,6 +983,20 @@
   color: #7F8C8D;
 }
 
+.room__settle-end {
+  width: 100%;
+  margin-top: 24rpx;
+  padding: 20rpx;
+  border-radius: 44rpx;
+  background: #FFF7ED;
+  border: 2rpx solid #FF9F45;
+  color: #FF9F45;
+  font-size: 26rpx;
+  font-weight: 600;
+}
+
+.room__settle-end::after { border: none; }
+
 /* ===== 9. 底部弹窗 (Sheet) - Figma ===== */
 .room__sheet-overlay {
   position: absolute;

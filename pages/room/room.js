@@ -93,7 +93,7 @@ Page({
   },
 
   async loadDetail() {
-    if (this.data.loading) return;
+    if (this.data.loading) { this._detailDirty = true; return; }
     this.setData({ loading: true });
     try {
       const res = await roomApi.detail(this.data.roomNo);
@@ -162,6 +162,10 @@ Page({
       wx.showToast({ title: e.message || '加载失败', icon: 'none' });
     } finally {
       this.setData({ loading: false });
+      if (this._detailDirty) {
+        this._detailDirty = false;
+        this.loadDetail();
+      }
     }
   },
 
@@ -177,8 +181,14 @@ Page({
         this.setData({ settleSubmitted: payload.submitted, settleTotal: payload.total });
       }
       if (payload.deadline) this.startCountdown(payload.deadline);
+      if (payload.state === 'input' && payload.deadline) {
+        this.setData({ settleModalVisible: true, settleInput: { income: '', expense: '' }, settleNet: 0 });
+      }
       this.loadDetail();
-      if (payload.state === 'done' || payload.state === 'settled') this.clearSettleTimer();
+      if (payload.state === 'done' || payload.state === 'settled') {
+        this.clearSettleTimer();
+        this.setData({ settleModalVisible: false });
+      }
       if (payload.rebalance) {
         wx.showToast({ title: `收支不平衡（差额${payload.diff}），请重新输入`, icon: 'none', duration: 3000 });
       }

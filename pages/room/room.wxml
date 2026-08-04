@@ -148,7 +148,11 @@
   <!-- ===== 6. 底部操作区 - Figma ===== -->
   <view class="room__bottom">
     <block wx:if="{{room.mode === 'auto'}}">
-      <button wx:if="{{room.isOwner}}" class="room__bottom-btn room__bottom-btn--primary" bindtap="onStartSettle">
+      <button wx:if="{{room.state === 'settling'}}" class="room__bottom-btn room__bottom-btn--primary" bindtap="onOpenSettleModal">
+        <text class="room__bottom-btn-icon">📝</text>
+        <text class="room__bottom-btn-label">{{room.currentUserSubmitted ? '查看本局结算' : '填写本局收支'}}</text>
+      </button>
+      <button wx:elif="{{room.isOwner}}" class="room__bottom-btn room__bottom-btn--primary" bindtap="onStartSettle">
         <text class="room__bottom-btn-icon">🎲</text>
         <text class="room__bottom-btn-label">发起本局结算</text>
       </button>
@@ -209,7 +213,7 @@
           </view>
         </view>
         <view class="room__settle-bar">
-          <view class="room__settle-bar-fill" style="width:{{settleCountdown > 0 ? (settleCountdown / 60 * 100) : 0}}%;background:{{settleCountdown > 30 ? 'linear-gradient(135deg, #4ECDC4 0%, #45B7D1 100%)' : settleCountdown > 15 ? 'linear-gradient(90deg, #FFD93D, #FF9F45)' : 'linear-gradient(90deg, #FF6B6B, #FF9F45)'}}"></view>
+          <view class="room__settle-bar-fill" style="width:{{settleCountdown > 0 ? (settleCountdown / 90 * 100) : 0}}%;background:{{settleCountdown > 30 ? 'linear-gradient(135deg, #4ECDC4 0%, #45B7D1 100%)' : settleCountdown > 15 ? 'linear-gradient(90deg, #FFD93D, #FF9F45)' : 'linear-gradient(90deg, #FF6B6B, #FF9F45)'}}"></view>
         </view>
         <view wx:if="{{room.currentUserSubmitted}}" style="text-align:center;padding:40rpx 0;">
           <text style="font-size:40rpx">✅</text>
@@ -248,6 +252,7 @@
           <button class="room__settle-submit" bindtap="onSettleSubmit">✅ 提交本局数据</button>
           <text class="room__settle-footer">倒计时结束后未提交将自动视为 0 分</text>
         </block>
+        <button wx:if="{{room.isOwner}}" class="room__settle-end" bindtap="onEndSettle">⏩ 提前结束输入（未提交按 0 计）</button>
       </view>
     </view>
   </view>
