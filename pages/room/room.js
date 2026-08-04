@@ -59,7 +59,14 @@ Page({
   },
 
   onShareAppMessage() {
-    return { title: '一起来玩牌桌记分吧！', query: `roomNo=${this.data.roomNo}` };
+    if (this.data.finalSheetVisible) {
+      return { title: '来看看我的牌桌记分结算报告！', path: '/pages/home/home' };
+    }
+    return {
+      title: '一起来玩牌桌记分吧！',
+      query: `roomNo=${this.data.roomNo}`,
+      imageUrl: this.data.shareQrcode || undefined
+    };
   },
 
   onUnload() {
@@ -395,13 +402,6 @@ Page({
 
   onCloseFinalSheet() { this.setData({ finalSheetVisible: false }); },
 
-  onShareFinal() {
-    wx.shareAppMessage({
-      title: '来看看我的牌桌记分结算报告！',
-      path: `/pages/home/home`
-    });
-  },
-
   onGoHome() {
     wx.switchTab({ url: '/pages/home/home' });
   },
@@ -456,14 +456,6 @@ Page({
   },
 
   onCloseShare() { this.setData({ shareVisible: false }); },
-
-  onShareApp() {
-    wx.shareAppMessage({
-      title: '一起来玩牌桌记分吧！',
-      imageUrl: this.data.shareQrcode || '',
-      query: `roomNo=${this.data.roomNo}`
-    });
-  },
 
   onCopyRoomNo() {
     wx.setClipboardData({

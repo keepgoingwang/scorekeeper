@@ -46,14 +46,6 @@ Page({
     });
   },
 
-  /** 分享战绩 */
-  onShare() {
-    wx.shareAppMessage({
-      title: '来看看我的棋牌结算报告！',
-      path: `/pages/home/home`
-    });
-  },
-
   /** 返回首页 */
   onGoHome() {
     wx.switchTab({ url: '/pages/home/home' });

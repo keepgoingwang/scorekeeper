@@ -54,7 +54,7 @@
 
       <!-- 操作按钮 -->
       <view class="settle-report__actions">
-        <button class="settle-report__share-btn" bindtap="onShare">📤 分享战绩</button>
+        <button class="settle-report__share-btn" open-type="share">📤 分享战绩</button>
         <button class="settle-report__dissolve-btn" bindtap="onGoHome">💥 返回首页</button>
       </view>
     </view>

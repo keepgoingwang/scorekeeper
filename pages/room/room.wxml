@@ -181,11 +181,11 @@
           <image wx:if="{{shareQrcode}}" style="width:400rpx;height:400rpx;" src="{{shareQrcode}}" mode="widthFix" />
           <view wx:else class="room__qr-code-center">🀄</view>
         </view>
-        <view class="room__qr-room">
+        <view class="room__qr-room" bindlongpress="onCopyRoomNo">
           <text class="room__qr-room-label">房间号（长按可复制）</text>
           <text class="room__qr-room-no">{{roomNo}}</text>
         </view>
-        <button class="room__qr-share" bindtap="onShareApp">💬 转发给好友</button>
+        <button class="room__qr-share" open-type="share">💬 转发给好友</button>
       </view>
     </view>
   </view>
@@ -423,7 +423,7 @@
           </view>
           <text class="room__final-score {{item.score > 0 ? 'text-success' : item.score < 0 ? 'text-danger' : ''}}">{{item.score > 0 ? '+' : ''}}{{item.score}}</text>
         </view>
-        <button class="room__final-share" bindtap="onShareFinal">📤 分享战绩</button>
+        <button class="room__final-share" open-type="share">📤 分享战绩</button>
         <button class="room__final-dissolve" bindtap="onGoHome">💥 返回首页</button>
       </view>
     </view>
