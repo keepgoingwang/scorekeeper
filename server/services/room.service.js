@@ -69,7 +69,7 @@ async function exitOldRoom(userId, opts = {}) {
  * @param {string} userId
  */
 async function create(userId) {
-  await exitOldRoom(userId, { silent: true }); // 房间唯一性
+  await exitOldRoom(userId); // 房间唯一性
   const roomNo = await genRoomNo();
   const room = await Room.create({
     roomNo,
@@ -100,7 +100,7 @@ async function join(roomNo, userId) {
   if (room.state === 'settled') {
     throw new BizError('房间已结算', 400, 400);
   }
-  await exitOldRoom(userId, { silent: true }); // 房间唯一性
+  await exitOldRoom(userId); // 房间唯一性
 
   const exists = room.members.find((m) => m.userId.toString() === userId.toString());
   if (!exists) {

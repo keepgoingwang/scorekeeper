@@ -181,7 +181,6 @@ async function manualPay(roomNo, fromId, data) {
   if (fromId.toString() === String(toUserId)) throw new BizError('不能转给自己', 400, 400);
   const amt = Number(amount);
   if (!amt || amt <= 0) throw new BizError('请输入有效金额', 400, 400);
-  if (payer.score < amt) throw new BizError(`积分不足，当前可用积分：${payer.score}`, 400, 400);
 
   payer.score -= amt;
   payee.score += amt;

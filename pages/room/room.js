@@ -168,7 +168,7 @@ Page({
   bindSocket() {
     const token = getApp().globalData.token;
     socket.connect(token);
-    socket.send('room:join', { roomNo: this.data.roomNo });
+    socket.join(this.data.roomNo);
     this._unsubScore = socket.on('room:score', () => this.loadDetail());
     this._unsubDynamic = socket.on('room:dynamic', () => this.loadDetail());
     this._unsubMember = socket.on('room:member', () => this.loadDetail());
@@ -190,6 +190,7 @@ Page({
   },
 
   clearSocket() {
+    socket.leave();
     if (this._unsubScore) this._unsubScore();
     if (this._unsubDynamic) this._unsubDynamic();
     if (this._unsubMember) this._unsubMember();
@@ -242,7 +243,7 @@ Page({
       manualAmountVisible: true,
       manualPayee: payee,
       manualAmount: '',
-      manualPayHint: `当前可用积分：${currentScore}，积分将从你账户扣除并转给 ${payee.nickname}`
+      manualPayHint: `当前积分：${currentScore}，积分将从你账户扣除并转给 ${payee.nickname}`
     });
   },
 
@@ -265,9 +266,6 @@ Page({
     const amount = parseInt(this.data.manualAmount, 10);
     if (!payee) return;
     if (!amount || amount <= 0) return wx.showToast({ title: '请输入有效金额', icon: 'none' });
-    const payer = this.data.room.members.find(m => m.userId === getApp().globalData.userInfo?._id);
-    const currentScore = payer ? payer.score : 0;
-    if (amount > currentScore) return wx.showToast({ title: `积分不足，当前可用积分：${currentScore}`, icon: 'none' });
     try {
       await roomApi.manualPay(this.data.roomNo, { toUserId: payee.userId, amount });
       wx.showToast({ title: '转账成功', icon: 'success' });

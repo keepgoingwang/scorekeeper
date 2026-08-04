@@ -10,6 +10,8 @@ let socketTask = null;
 let reconnectTimer = null;
 let reconnectAttempts = 0;
 const MAX_RECONNECT = 5;
+/** 当前订阅的房间号：重连成功后自动重新入频道 */
+let joinedRoom = null;
 
 const socket = {
   /**
@@ -25,6 +27,7 @@ const socket = {
 
       socketTask.onOpen(() => {
         reconnectAttempts = 0;
+        if (joinedRoom) this.send('room:join', { roomNo: joinedRoom });
         resolve();
       });
 
@@ -82,6 +85,24 @@ const socket = {
   },
 
   /**
+   * 加入房间频道：记录房间号，连接建立/重连成功后自动发送订阅
+   * @param {string} roomNo
+   */
+  join(roomNo) {
+    joinedRoom = roomNo;
+    this.send('room:join', { roomNo });
+  },
+
+  /**
+   * 离开房间频道
+   */
+  leave() {
+    if (!joinedRoom) return;
+    joinedRoom = null;
+    this.send('room:leave');
+  },
+
+  /**
    * 断线重连（指数退避）
    */
   scheduleReconnect(token) {
@@ -102,6 +123,7 @@ const socket = {
       reconnectTimer = null;
     }
     reconnectAttempts = MAX_RECONNECT; // 阻止自动重连
+    joinedRoom = null;
     if (socketTask) {
       socketTask.close({});
       socketTask = null;
