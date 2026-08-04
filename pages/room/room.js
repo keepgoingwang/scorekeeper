@@ -38,6 +38,7 @@ Page({
     skinBg: 'radial-gradient(ellipse at 40% 35%, #3D7A52, #1f4028)',
     activePlayers: [],
     settleNet: 0,
+    keyboardHeight: 0,
     // 手动结算弹窗
     manualPayVisible: false,
     manualPayees: [],
@@ -258,7 +259,11 @@ Page({
   },
 
   onCloseAmount() {
-    this.setData({ manualAmountVisible: false, manualPayee: null, manualAmount: '' });
+    this.setData({ manualAmountVisible: false, manualPayee: null, manualAmount: '', keyboardHeight: 0 });
+  },
+
+  onKeyboardHeightChange(e) {
+    this.setData({ keyboardHeight: e.detail.height || 0 });
   },
 
   onAmountInput(e) {
@@ -299,7 +304,7 @@ Page({
   },
 
   onOpenSettleModal() { this.setData({ settleModalVisible: true }); },
-  onCloseSettleModal() { this.setData({ settleModalVisible: false }); },
+  onCloseSettleModal() { this.setData({ settleModalVisible: false, keyboardHeight: 0 }); },
 
   async onEndSettle() {
     try {
@@ -338,7 +343,7 @@ Page({
     try {
       await roomApi.submitSettle(this.data.roomNo, { income: incomeNum, expense: expenseNum });
       wx.showToast({ title: '提交成功', icon: 'success' });
-      this.setData({ settleInput: { income: '', expense: '' }, settleNet: 0 });
+      this.setData({ settleInput: { income: '', expense: '' }, settleNet: 0, keyboardHeight: 0 });
       this.loadDetail();
     } catch (e) {
       wx.showToast({ title: e.message || '提交失败，请重试', icon: 'none' });
@@ -386,7 +391,12 @@ Page({
 
   onDissolveRoom() {
     this.setData({ actionSheetVisible: false });
-    this.showConfirm('确定解散当前房间？所有成员将被移出，此操作不可撤销。', '解散', true, async () => {
+    const room = this.data.room;
+    const unrecorded = room.state !== 'settled' && room.members.some(m => m.status === 'active' && m.score !== 0);
+    const msg = unrecorded
+      ? '确定解散当前房间？尚未进行终局结算，本局积分将不会记入个人战绩，此操作不可撤销。'
+      : '确定解散当前房间？所有成员将被移出，此操作不可撤销。';
+    this.showConfirm(msg, '解散', true, async () => {
       try {
         await roomApi.dissolve(this.data.roomNo);
         wx.showToast({ title: '房间已解散', icon: 'success' });

@@ -195,7 +195,7 @@
   </view>
 
   <!-- ===== 8. 结算弹窗 (Auto Settle Modal) - Figma ===== -->
-  <view wx:if="{{settleModalVisible}}" class="room__settle-overlay" bindtap="onCloseSettleModal">
+  <view wx:if="{{settleModalVisible}}" class="room__settle-overlay" style="padding-bottom:{{keyboardHeight}}px" bindtap="onCloseSettleModal">
     <view class="room__settle-panel" catchtap>
       <view class="room__settle-header">
         <view class="room__settle-header-left">
@@ -227,14 +227,14 @@
                 <text class="room__settle-field-icon">💰</text>
                 <text class="room__settle-field-label" style="color:#6BCB77">收入金额</text>
               </view>
-              <input class="room__settle-field-input" type="digit" placeholder="0" value="{{settleInput.income}}" bindinput="onIncomeInput" style="{{settleInput.income ? 'border-color:#6BCB77;background:#E8F8ED;color:#6BCB77' : ''}}" />
+              <input class="room__settle-field-input" type="digit" placeholder="0" value="{{settleInput.income}}" bindinput="onIncomeInput" adjust-position="{{false}}" bindkeyboardheightchange="onKeyboardHeightChange" style="{{settleInput.income ? 'border-color:#6BCB77;background:#E8F8ED;color:#6BCB77' : ''}}" />
             </view>
             <view class="room__settle-field">
               <view class="room__settle-field-header">
                 <text class="room__settle-field-icon">💸</text>
                 <text class="room__settle-field-label" style="color:#FF6B6B">支出金额</text>
               </view>
-              <input class="room__settle-field-input" type="digit" placeholder="0" value="{{settleInput.expense}}" bindinput="onExpenseInput" style="{{settleInput.expense ? 'border-color:#FF6B6B;background:#FFF2F2;color:#FF6B6B' : ''}}" />
+              <input class="room__settle-field-input" type="digit" placeholder="0" value="{{settleInput.expense}}" bindinput="onExpenseInput" adjust-position="{{false}}" bindkeyboardheightchange="onKeyboardHeightChange" style="{{settleInput.expense ? 'border-color:#FF6B6B;background:#FFF2F2;color:#FF6B6B' : ''}}" />
             </view>
           </view>
           <view class="room__settle-quick">
@@ -294,7 +294,7 @@
   </view>
 
   <!-- ===== 10. 手动结算 - 金额输入 (AmountSheet) - Figma ===== -->
-  <view wx:if="{{manualAmountVisible}}" class="room__sheet-overlay" bindtap="onCloseAmount">
+  <view wx:if="{{manualAmountVisible}}" class="room__sheet-overlay" style="padding-bottom:{{keyboardHeight}}px" bindtap="onCloseAmount">
     <view class="room__sheet" catchtap>
       <view class="room__sheet-handle">
         <view class="room__sheet-handle-bar"></view>
@@ -311,6 +311,8 @@
           placeholder="0"
           value="{{manualAmount}}"
           bindinput="onAmountInput"
+          adjust-position="{{false}}"
+          bindkeyboardheightchange="onKeyboardHeightChange"
           auto-focus
         />
         <view class="room__amount-btns">
